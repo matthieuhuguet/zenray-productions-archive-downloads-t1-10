@@ -1,0 +1,572 @@
+# Partie 3 — Faire tomber les dominos dans le bon ordre
+
+## Scénario C : l’effet de levier n’est pas le premier domino
+
+L’argent de la banque peut accélérer une trajectoire. Mais il ne crée pas le point de départ.
+
+Pour emprunter, il faut généralement déjà disposer de trois choses :
+
+- un revenu déclaré ;
+- un historique stable ;
+- une capacité à continuer de payer si le projet rencontre un problème.
+
+Donc le premier objectif n’est pas d’acheter plusieurs biens immobiliers. Le premier objectif est de devenir **finançable**.
+
+L’ordre réel est le suivant :
+
+> **Compétence visible → client → revenu → historique → produit → actif → crédit → patrimoine**
+
+Le crédit intervient au milieu ou à la fin de la chaîne, pas au début.
+
+Exemple futur, uniquement pour comprendre le mécanisme : tu achètes un bien locatif à 250 000 €. Tu apportes 50 000 €, la banque finance 200 000 € et les loyers couvrent une partie importante du remboursement.
+
+Ce mécanisme peut transformer un apport limité en un actif beaucoup plus important. Mais parler aujourd’hui des 50 000 € d’apport ne résout rien. Il faut d’abord construire le système professionnel qui produira ces 50 000 € et convaincra une banque de te suivre.
+
+Le levier bancaire est donc un **domino ultérieur**. Le domino actuel est la première facture.
+
+---
+
+# Le plan, dans l’ordre réel
+
+## Phase 0 — Les douze prochains mois : produire le premier revenu
+
+Objectif unique :
+
+> **Passer de zéro client à un client, puis d’un client à trois clients.**
+
+Le reste est secondaire.
+
+À ce stade :
+
+- l’optimisation fiscale n’est pas le problème ;
+- le choix du portefeuille financier n’est pas le problème ;
+- le rendement composé n’est pas le problème ;
+- l’immobilier n’est pas le problème ;
+- le montant nécessaire pour arrêter de travailler n’est pas le problème.
+
+Le problème est :
+
+> **Comment transformer tes compétences actuelles en une offre que quelqu’un accepte de payer ?**
+
+### Domino 1 : publier une preuve
+
+Le projet Church doit être publié.
+
+Il n’a pas besoin d’être l’œuvre définitive. Il doit démontrer clairement :
+
+- ce que tu sais construire ;
+- le problème technique résolu ;
+- le résultat visuel ;
+- les outils employés ;
+- ce que ton intervention permettrait à un studio d’économiser ou de produire.
+
+Un projet invisible ne produit :
+
+- aucun appel ;
+- aucune conversation ;
+- aucune preuve ;
+- aucune mission.
+
+Sa valeur commerciale est donc nulle, même si sa qualité potentielle est élevée.
+
+### Domino 2 : définir une offre achetable
+
+« Technical Artist Unreal/Houdini » est une compétence. Ce n’est pas encore une offre.
+
+Une offre ressemble davantage à ceci :
+
+- audit et correction d’un pipeline Unreal ;
+- création d’un outil procédural Houdini ;
+- automatisation de l’import et de la validation d’assets ;
+- système de génération de décors ;
+- outil UMG ou Editor Utility pour une équipe artistique ;
+- optimisation d’une scène ou d’un pipeline de production.
+
+Le client doit comprendre :
+
+1. le problème traité ;
+2. le résultat livré ;
+3. le temps économisé ;
+4. le prix approximatif ;
+5. la durée de l’intervention.
+
+### Domino 3 : envoyer les premières propositions
+
+Le tracker de prospection doit quitter zéro.
+
+Pas trente messages génériques. Cinq messages précis adressés à cinq personnes ou studios pour lesquels ton travail résout un problème crédible.
+
+Le but des premiers messages n’est même pas immédiatement de vendre. Il est de récupérer de l’information :
+
+- Le positionnement est-il compris ?
+- Les studios ont-ils ce problème ?
+- La démonstration inspire-t-elle confiance ?
+- Le prix paraît-il plausible ?
+- Quelle objection revient le plus souvent ?
+
+Le premier objectif mesurable est donc :
+
+> **0 client → 1 client**
+
+Puis :
+
+> **1 client → 3 clients**
+
+Lorsque trois personnes différentes ont payé pour une version proche du même service, tu ne disposes plus seulement d’une hypothèse. Tu commences à avoir un marché.
+
+### Cible de sortie de la phase
+
+- Church publié ;
+- premières démonstrations techniques visibles ;
+- trente contacts réellement envoyés ;
+- premier client payé ;
+- trois missions terminées ;
+- 35 000 € de revenu sur douze mois glissants.
+
+Le chiffre de 35 000 € n’est pas une somme à investir. C’est le premier niveau où ton activité commence à exister comme système professionnel.
+
+---
+
+## Phase 1 — De 2027 à 2029 : faire monter le revenu
+
+Objectif :
+
+> **Passer progressivement de 35 000 € à 60 000 €, puis à 90 000 € de revenu annuel.**
+
+Cette phase ne repose pas sur l’épargne. Elle repose sur quatre multiplicateurs.
+
+### 1. Vendre un problème plus coûteux
+
+Tu ne passes pas de 300 € à 600 € par jour uniquement parce que tu es techniquement meilleur.
+
+Tu montes en valeur lorsque le problème traité devient plus important.
+
+Exemple faible :
+
+> Je réalise un outil Blueprint.
+
+Exemple plus fort :
+
+> Je construis un système qui réduit de deux jours à vingt minutes l’intégration d’un environnement et permet aux artistes de l’utiliser sans intervention d’un programmeur.
+
+La technique reste la même matière première. Mais la seconde formulation touche :
+
+- le temps de production ;
+- le coût de l’équipe ;
+- la dépendance aux développeurs ;
+- le risque de retard.
+
+C’est cela que le client paie.
+
+### 2. Viser les marchés qui disposent du budget
+
+Un studio français et un studio américain peuvent avoir le même problème, mais pas le même budget.
+
+La priorité devient donc :
+
+- clients américains ;
+- clients nordiques ;
+- studios internationaux travaillant en anglais ;
+- agences de visualisation ou de production virtuelle ;
+- studios Unreal extérieurs au jeu vidéo lorsque la mission est compatible.
+
+La localisation du client peut multiplier la valeur d’une même compétence sans multiplier la difficulté technique.
+
+### 3. Réduire la dispersion
+
+À ce stade, apprendre dix nouvelles disciplines peut ralentir le revenu.
+
+Il faut une spécialisation identifiable.
+
+Par exemple :
+
+> J’aide les petites et moyennes équipes Unreal à accélérer la production d’environnements grâce à des outils Houdini, des systèmes procéduraux et des outils d’éditeur utilisables directement par les artistes.
+
+Cette phrase est plus vendable que :
+
+> Je fais de l’Unreal, du Houdini, du Maya, du ZBrush, des interfaces, du Blueprint et un peu de code.
+
+La première crée une catégorie claire. La seconde décrit une accumulation de logiciels.
+
+### 4. Transformer chaque mission en preuve pour la suivante
+
+Une mission ne doit pas seulement produire de l’argent. Elle doit également produire, lorsque les accords de confidentialité le permettent :
+
+- un résultat avant/après ;
+- un chiffre de temps économisé ;
+- un témoignage ;
+- une démonstration ;
+- une meilleure offre ;
+- une méthode réutilisable.
+
+Le revenu suivant doit être plus facile à obtenir que le précédent.
+
+### Cible de sortie de la phase
+
+- 60 000 €, puis 90 000 € de revenu annuel ;
+- une offre principale clairement définie ;
+- plusieurs études de cas ;
+- aucun client représentant à lui seul toute l’activité ;
+- un historique de revenus déclaré et exploitable ;
+- une capacité prévisible à obtenir de nouvelles missions.
+
+Le changement fondamental est le suivant :
+
+> Tu ne te demandes plus si quelqu’un paiera un jour. Tu cherches à rendre le flux de clients plus régulier.
+
+---
+
+## Phase 2 — De 2029 à 2033 : construire le premier revenu qui n’est pas proportionnel aux jours vendus
+
+Objectif :
+
+> **Transformer ce que les clients achètent déjà en produit.**
+
+Le produit ne doit pas naître d’une idée abstraite détachée du marché.
+
+Il doit sortir des problèmes récurrents observés dans les missions.
+
+Exemple :
+
+1. Un studio te paie pour construire un système de végétation procédurale.
+2. Un deuxième studio demande une variation proche.
+3. Un troisième rencontre le même problème.
+4. Tu identifies le noyau commun.
+5. Tu le transformes en outil configurable.
+6. Tu vends ensuite l’adaptation, la licence et le support.
+
+La mission client paie la recherche.
+
+Le produit conserve la valeur créée.
+
+### Répartition du temps
+
+Le modèle proposé devient :
+
+- environ 70 à 80 % : missions et revenus immédiats ;
+- environ 20 à 30 % : produit construit à partir de ces missions.
+
+Pas 100 % de produit dès le départ : le risque serait de construire pendant deux ans quelque chose que personne n’achète.
+
+Pas 0 % : le risque serait de rester indéfiniment bloqué dans la vente de jours.
+
+### Cibles progressives
+
+Le premier objectif du produit n’est pas 400 000 € par an.
+
+La progression logique est :
+
+> **0 → première vente → 1 000 € → 10 000 € → 30 000 € → 60 000 € par an**
+
+Chaque palier répond à une question différente :
+
+- première vente : quelqu’un en veut-il ?
+- 1 000 € : est-ce reproductible ?
+- 10 000 € : existe-t-il un petit marché ?
+- 30 000 € : le produit commence-t-il à financer son développement ?
+- 60 000 € : devient-il un véritable actif économique ?
+
+Le produit peut prendre plusieurs formes :
+
+- plugin Unreal ;
+- HDA Houdini ;
+- framework d’outils d’éditeur ;
+- bibliothèque procédurale ;
+- système de validation d’assets ;
+- formation technique ;
+- support annuel pour studios ;
+- outil interne transformé en licence.
+
+### Cible de sortie de la phase
+
+- un produit publié ;
+- des clients réels ;
+- un revenu produit non nul puis croissant ;
+- une bibliothèque technique réutilisable ;
+- une part du revenu qui n’augmente plus strictement avec le nombre de jours travaillés.
+
+À partir de là, ton activité commence à changer de nature.
+
+Tu ne possèdes plus seulement une compétence.
+
+Tu possèdes une chose.
+
+---
+
+## Phase 3 — De 2033 à 2041 : amplifier ce qui fonctionne
+
+Objectif :
+
+> **Faire croître l’actif, documenter le revenu et débloquer les leviers externes.**
+
+C’est seulement ici que deviennent réellement pertinents :
+
+- la banque ;
+- l’immobilier ;
+- l’achat d’une résidence ;
+- la cession d’un produit ou d’une entreprise ;
+- l’allocation du capital.
+
+### Le premier levier : déléguer
+
+Tu conserves :
+
+- l’architecture ;
+- la direction ;
+- les décisions produit ;
+- les relations importantes ;
+- la propriété intellectuelle.
+
+Tu délègues progressivement :
+
+- certaines intégrations ;
+- la documentation ;
+- le support simple ;
+- les tests ;
+- la production répétitive ;
+- certaines tâches artistiques.
+
+Le revenu cesse alors de dépendre uniquement de tes propres heures disponibles.
+
+### Le deuxième levier : les licences et le support
+
+Un outil vendu une seule fois produit un paiement.
+
+Un outil vendu avec :
+
+- licence annuelle ;
+- maintenance ;
+- mises à jour ;
+- support studio ;
+- intégration premium,
+
+produit une relation économique plus durable.
+
+### Le troisième levier : la cession
+
+Un actif qui produit 60 000 € de marge annuelle peut avoir une valeur supérieure à une seule année de bénéfice, parce que l’acheteur acquiert les revenus futurs, la technologie, les clients et la distribution.
+
+Le but n’est pas obligatoirement de vendre.
+
+Le point important est que tu possèdes désormais quelque chose qui **peut** être vendu.
+
+Un freelance ne peut pas vendre ses futures journées de travail comme une entreprise.
+
+Un propriétaire de produit peut vendre l’actif.
+
+### Le quatrième levier : le crédit
+
+À ce stade, tu peux commencer à présenter :
+
+- plusieurs années de revenus ;
+- des comptes propres ;
+- une activité stable ;
+- éventuellement des revenus récurrents ;
+- un apport réel ;
+- un statut de résidence sécurisé.
+
+Le crédit devient alors une option crédible.
+
+Il n’est plus une abstraction posée devant quelqu’un qui ne possède pas encore les premiers revenus.
+
+---
+
+# Ce que cela signifie dans une journée
+
+Un plan économique n’existe que s’il modifie ton calendrier.
+
+## Chaque jour ouvré
+
+### Bloc 1 — Produire une preuve ou une livraison
+
+Deux à quatre heures sur :
+
+- une mission payée ;
+- un portfolio directement vendable ;
+- une démonstration liée à ton offre ;
+- un outil pouvant devenir un produit.
+
+La question du bloc est :
+
+> Ce travail peut-il conduire à une facture, directement ou indirectement ?
+
+### Bloc 2 — Créer une opportunité commerciale
+
+Une action concrète :
+
+- contacter un studio ;
+- relancer un prospect ;
+- envoyer une proposition ;
+- publier une étude de cas ;
+- demander une recommandation ;
+- répondre à une mission qualifiée.
+
+La prospection n’est pas séparée du métier. Elle est le mécanisme qui transforme la compétence en revenu.
+
+### Bloc 3 — Renforcer la compétence qui augmente la valeur vendue
+
+Une heure maximum ciblée sur un problème utile commercialement.
+
+Pas apprendre une technique uniquement parce qu’elle est fascinante.
+
+Apprendre une technique parce qu’elle permet :
+
+- de résoudre un problème plus cher ;
+- de livrer plus vite ;
+- de produire un outil réutilisable ;
+- de se différencier ;
+- de montrer une preuve spectaculaire.
+
+---
+
+## Chaque semaine
+
+- une publication publique ;
+- cinq contacts qualifiés minimum ;
+- une amélioration de l’offre ;
+- une itération sur la démonstration ou le produit ;
+- une vérification du revenu encaissé et des opportunités ouvertes.
+
+Les indicateurs principaux deviennent :
+
+1. contacts envoyés ;
+2. réponses ;
+3. appels ;
+4. propositions ;
+5. contrats ;
+6. revenu encaissé ;
+7. revenu produit sans nouvelle journée vendue.
+
+L’épargne n’est pas le moteur de ce tableau.
+
+Le moteur est la capacité à transformer une action en revenu.
+
+---
+
+## Chaque trimestre
+
+Prendre une décision d’exposition :
+
+- annoncer un tarif plus élevé ;
+- viser un marché international ;
+- publier un outil imparfait ;
+- refuser une mission qui n’améliore ni le revenu ni les actifs ;
+- contacter un studio qui paraît actuellement hors de portée ;
+- transformer une prestation répétée en offre standardisée.
+
+La compétence sans exposition reste invisible.
+
+L’exposition sans compétence produit peu.
+
+Il faut les deux, mais dans ta situation, le déficit principal n’est pas une absence totale de compétence. C’est l’absence de conversion régulière de cette compétence en opportunités commerciales.
+
+---
+
+# Ce qui peut faire échouer le plan
+
+## 1. Aucun revenu ne décolle
+
+C’est le premier risque.
+
+Tant que le système ne passe pas de zéro à une facture, tout le reste reste théorique.
+
+La priorité absolue est donc :
+
+> **Preuve → contact → conversation → proposition → paiement**
+
+## 2. Construire trop longtemps sans publier
+
+Une démonstration qui reste privée ne peut pas créer d’opportunité.
+
+Le perfectionnisme peut produire un travail techniquement meilleur tout en détruisant sa valeur économique.
+
+## 3. Apprendre au lieu de vendre
+
+La formation est utile lorsqu’elle débloque une offre.
+
+Elle devient une fuite lorsqu’elle retarde constamment :
+
+- la publication ;
+- la prospection ;
+- la tarification ;
+- la confrontation au marché.
+
+## 4. Créer un produit sans partir d’un problème payé
+
+Un produit imaginé dans le vide peut consommer plusieurs années.
+
+Le produit le plus sûr est une généralisation de quelque chose que plusieurs clients ont déjà acheté sous forme de service.
+
+## 5. Dépendre d’un seul client
+
+Un gros client peut donner l’impression d’avoir construit une activité.
+
+Mais si son départ ramène le revenu à zéro, le moteur n’est pas encore stable.
+
+## 6. Augmenter les dépenses avant que le revenu soit reproductible
+
+Ici, le problème n’est pas moralement de « ne pas assez épargner ».
+
+Le problème est de rendre l’activité plus fragile au moment exact où elle doit encore prendre de la vitesse.
+
+## 7. Chercher trop tôt le mécanisme final
+
+Immobilier, intérêts composés, fiscalité avancée, structure internationale : tous ces éléments peuvent compter plus tard.
+
+Mais travailler dessus aujourd’hui au lieu de publier et prospecter constitue une forme sophistiquée de procrastination.
+
+---
+
+# Les sept prochains jours
+
+1. **Publier Church dans une version montrable.** Pas nécessairement définitive.
+
+2. **Écrire une offre en une phrase.**  
+   Exemple : « J’aide les équipes Unreal à accélérer la production d’environnements grâce à des outils procéduraux Houdini et des outils d’éditeur directement utilisables par les artistes. »
+
+3. **Créer une page ou un post démontrant un seul problème résolu.**  
+   Pas une galerie générale. Un problème, un système, un résultat.
+
+4. **Envoyer cinq messages ciblés.**  
+   Chaque message doit mentionner pourquoi ce studio précis pourrait être concerné.
+
+5. **Identifier une première prestation vendable en moins de deux semaines.**  
+   Assez petite pour être achetée rapidement, assez utile pour produire une étude de cas.
+
+6. **Créer un tableau commercial minimal :**  
+   prospect, problème, date du contact, réponse, prochaine action, valeur potentielle.
+
+7. **Mesurer le seul résultat immédiat :**  
+   combien de conversations commerciales nouvelles ont réellement commencé ?
+
+---
+
+# Ce qu’il faut retenir
+
+**Le premier objectif n’est pas 6 millions.**
+
+Le premier objectif est :
+
+> **0 client → 1 client**
+
+Puis :
+
+> **1 client → 3 clients**
+
+Puis :
+
+> **35 000 € → 60 000 € → 90 000 € de revenu**
+
+Ensuite seulement :
+
+> **Revenu de service → produit → actif → levier → patrimoine**
+
+La maison n’est pas achetée par un conseil d’épargne.
+
+Elle est achetée par une chaîne de mécanismes débloqués dans le bon ordre.
+
+Aujourd’hui, le domino n’est ni le portefeuille, ni les 666 000 €, ni la retraite.
+
+Le domino est :
+
+> **Publier une preuve, obtenir une conversation et faire exister la première facture.**
