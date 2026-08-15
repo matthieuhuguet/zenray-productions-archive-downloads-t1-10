@@ -1,0 +1,81 @@
+# Skill — Retouche photo 80/20
+
+## Principe
+Une retouche suit toujours :
+**Structure → Lumière → Couleur → Local → Sortie**
+Ne corrige pas une image dans le désordre. Chaque réglage change le jugement du suivant.
+
+## Règles fixes
+1. **Balance des blancs avant couleur.**
+2. **Luminance avant saturation.**
+3. **Détail en dernier, à 100 %.**
+4. **Mesure avec histogramme + alertes d'écrêtage.** (`J` dans Camera Raw)
+5. **Saturation globale = outil secondaire. Préférer Vibrance + TSL.**
+
+> Édition RAW dans Camera Raw (ACR), retouche locale dans Photoshop. Ouvre toujours en Objet dynamique pour rester non destructif.
+
+## Priorité 80/20
+1. Cadrage / composition
+2. Balance des blancs
+3. Exposition
+4. Points blanc/noir + courbe
+5. Couleur par canal
+6. Dodge & burn
+7. Bruit / netteté
+8. Finition : grain, vignette, export
+
+## Pipeline
+
+### 1. Structure
+- Activer corrections optiques. → ACR, panneau **Optique** : cocher *Profil* et *Aberration chromatique*.
+- Corriger distorsion, aberrations, vignettage parasite. → onglet **Manuel** si besoin.
+- Redresser horizon / verticales. → **Géométrie**, ou outil Redressement (`A`).
+- Recadrer tôt pour ne pas retoucher hors champ. → outil **Recadrage** (`C`).
+
+### 2. Lumière
+Ordre, dans ACR panneau **De base** :
+1. Balance des blancs → *Température / Teinte*, ou pipette sur un gris neutre.
+2. Exposition globale → *Exposition*.
+3. Blancs / Noirs → poser les points en `Alt`+glissé (seuil d'écrêtage).
+4. Hautes lumières / Ombres → récupérer brûlé et bouché.
+5. Courbe tonale → **Courbe** en S.
+
+Le vrai contraste vient des blancs/noirs + courbe, pas du curseur Contraste seul.
+
+### 3. Présence
+À doser après la lumière, panneau **De base** :
+- Texture : détail propre.
+- Clarté : punch, mais halos possibles.
+- Dehaze (*Atténuation du voile*) : utile, mais fonce et sature vite.
+
+### 4. Couleur
+Ordre :
+1. Vibrance avant Saturation.
+2. TSL / Color Mixer → panneau **Mélangeur de couleurs** (Teinte/Saturation/Luminance par canal).
+3. Color Grading → panneau **Étalonnage des couleurs** (roues ombres/moyens/hautes).
+4. Calibration seulement si tu maîtrises déjà le reste → panneau **Étalonnage**.
+
+Ne pousse pas la saturation globale pour compenser une mauvaise lumière.
+
+### 5. Local
+Sculpter le regard :
+- Masques sujet / ciel / arrière-plan. → ACR **Masquage** (*Sélectionner sujet / ciel*), ou dans PS calque de réglage + masque.
+- Dodge & burn pour guider l'œil et donner du volume. → calque **Courbes** clair masqué en noir, peindre en blanc ; ou calque gris 50 % mode **Lumière tamisée**, outils Densité+/Densité−.
+- Corrections locales d'exposition, couleur, clarté.
+
+Le dodge & burn est souvent le plus gros différenciateur entre une image corrigée et une image construite.
+
+### 6. Sortie
+- Réduction de bruit. → **Filtre > Bruit > Réduction**, ou *Débruitage IA* d'ACR.
+- Netteté à 100 %. → **Filtre > Netteté > Accentuation** (avec masquage).
+- Netteté adaptée à la sortie : web, print, vente, portfolio.
+- Export web : sRGB. → **Fichier > Exporter > Exporter sous**, profil sRGB.
+
+## Cas particulier IA
+Si débruitage IA RAW : le faire parfois au début.
+Sinon : bruit et netteté restent en fin.
+
+## Pont vidéo
+Même logique en vidéo :
+**Exposition/WB → conversion LOG/LUT → contraste → couleur → local → export**
+En D-LogM 10 bits : exposer proprement, poser la balance des blancs, convertir, puis grader.
