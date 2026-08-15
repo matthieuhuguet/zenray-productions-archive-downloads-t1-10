@@ -1,0 +1,41 @@
+foobar2000 1.4 / Dynamic Range Meter 1.1.1
+log date: 2018-11-16 11:34:24
+
+--------------------------------------------------------------------------------
+Analyzed: Ludwig Goransson, A$AP Rocky / Creed II (Original Motion Picture Soundtrack) (1)
+          Ludwig Goransson, Jacob Banks / Creed II (Original Motion Picture Soundtrack) (2)
+          Ludwig Goransson, Vince Staples / Creed II (Original Motion Picture Soundtrack) (3)
+          Ludwig Goransson / Creed II (Original Motion Picture Soundtrack) (4-15)
+          Tessa Thompson / Creed II (Original Motion Picture Soundtrack) (16-17)
+--------------------------------------------------------------------------------
+
+DR         Peak         RMS     Duration Track
+--------------------------------------------------------------------------------
+DR10      -0.32 dB   -12.90 dB      5:05 12-Runnin
+DR11      -5.68 dB   -23.73 dB      1:19 11-You Might Find Me
+DR11      -0.32 dB   -15.51 dB      2:10 08-Ice Cold
+DR14      -0.32 dB   -20.23 dB      3:34 01-Drago
+DR12      -0.32 dB   -16.01 dB      2:32 02-Wheeler Fight
+DR10     -13.48 dB   -27.32 dB      1:28 03-Yo? Is That a Yes?
+DR11      -4.61 dB   -24.56 dB      4:05 04-The Public Challenge
+DR10      -2.87 dB   -20.81 dB      2:59 06-You Think I'm Going to Lose
+DR12      -3.16 dB   -20.53 dB      1:31 07-Balanced Breakfast
+DR11      -5.33 dB   -23.57 dB      2:01 09-Under Water
+DR14      -3.58 dB   -23.16 dB      2:27 10-Adonis and Amara
+DR11      -0.32 dB   -14.30 dB      1:59 13-Drago's Walk Out
+DR13      -0.32 dB   -17.08 dB      6:14 15-Fight in Moscow
+DR12      -0.32 dB   -17.15 dB      5:29 16-It's Your Time
+DR11      -7.45 dB   -23.65 dB      3:26 17-Family Visit
+DR9       -0.32 dB   -12.69 dB      2:59 05-Time Tick
+DR7       -0.32 dB   -10.05 dB      1:37 14-I Will Go to War
+--------------------------------------------------------------------------------
+
+Number of tracks:  17
+Official DR value: DR11
+Samplerate:        48000 Hz
+Channels:          2
+Bits per sample:   24
+Bitrate:           1456 kbps
+Codec:             FLAC
+================================================================================
+
