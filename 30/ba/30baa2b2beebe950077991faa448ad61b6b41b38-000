@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Liquid Glass Components — UI Reference Museum</title>
+<style>.play-timing-row{ gap:18px; justify-content:center; max-width:1100px; }
+  .play-timing{ gap:7px; }
+  .timing-toggle{ width:64px; height:64px; }
+  .timing-icon{ grid-area:1/1; width:22px; height:22px; fill:currentColor; transition:opacity var(--timing-duration) cubic-bezier(.16,1,.3,1), transform var(--timing-duration) cubic-bezier(.16,1,.3,1); }
+  .timing-play{ width:23px; height:23px; opacity:0; transform:scale(.72); }
+  .timing-toggle.is-playing .timing-pause{ opacity:0; transform:scale(.72); }
+  .timing-toggle.is-playing .timing-play{ opacity:1; transform:scale(1); }
+  @media (prefers-reduced-motion: reduce){ .timing-icon{ transition-duration:0.01ms !important; } }
+  :root{
+    --fill: rgba(255,255,255,.26);
+    --blur: blur(22px) saturate(70%) brightness(1.28);
+    --rim-edge: rgba(255,255,255,.55);
+    --shadow: 0 2px 10px rgba(0,0,0,.14);
+    --rim: inset 0 1px 0 var(--rim-edge), inset 0 -1px 0 var(--rim-edge);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;gap:26px;padding:40px;
+    font-family:'AnthropicSans',-apple-system,sans-serif;color:#fff;
+    background: #c41d75;
+  }
+  h1{font-size:14px;font-weight:500;color:rgba(255,255,255,.7);margin:0}
+  .row{ display:flex; gap:28px; align-items:flex-start; flex-wrap:wrap; max-width:1100px; }
+  label{ font-size:11px; color:rgba(255,255,255,.65); text-align:center; }
+  .col{ display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .noise{
+    position:absolute; inset:0; border-radius:inherit; pointer-events:none; opacity:.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .glass{
+    position:relative; display:grid; place-items:center; border-radius:999px; cursor:pointer; border:none;
+    background:var(--fill); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+    box-shadow: var(--rim), var(--shadow);
+    color:#fff; overflow:hidden;
+  }
+  .glass.sm{ width:48px; height:48px; }
+  .glass.md{ width:64px; height:64px; }
+  .glass.lg{ width:92px; height:92px; }
+  .glass svg{ position:relative; z-index:1; }
+  .glass.active{ background:#fff; color:#1d1d1f; box-shadow:0 2px 8px rgba(0,0,0,.18); backdrop-filter:none; -webkit-backdrop-filter:none; }
+  .glass.active-tint{ background:#0a84ff; color:#fff; box-shadow:0 2px 8px rgba(10,132,255,.35); backdrop-filter:none; -webkit-backdrop-filter:none; }
+  .pill{
+    display:flex; align-items:center; gap:10px; height:40px; padding:0 14px; border-radius:999px;
+    background:var(--fill); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+    box-shadow: var(--rim), var(--shadow);
+    position:relative; overflow:hidden;
+  }
+  .track{ position:relative; z-index:1; height:3px; width:160px; border-radius:999px; background:rgba(255,255,255,.28); overflow:hidden; }
+  .track > i{ position:absolute; inset:0 auto 0 0; width:52%; background:#fff; border-radius:999px; display:block; }
+  .progress-pill{
+    position:relative; display:grid; box-sizing:border-box; grid-template-columns:52px minmax(0,1fr) 58px; align-items:center;
+    gap:12px; width:min(760px,calc(100vw - 48px)); height:48px; padding:0 16px; overflow:hidden;
+    color:#fff; border-radius:999px; background:var(--fill); backdrop-filter:var(--blur);
+    -webkit-backdrop-filter:var(--blur); box-shadow:var(--rim),var(--shadow);
+    font:400 12px/1 'AnthropicMono',ui-monospace,monospace; font-variant-numeric:tabular-nums;
+  }
+  .progress-pill > span{ position:relative; z-index:1; white-space:nowrap; }
+  .progress-pill > span:last-child{ text-align:right; }
+  .progress-rail{ position:relative; z-index:1; height:6px; min-width:0; overflow:hidden; border-radius:999px; background:rgba(255,255,255,.28); }
+  .progress-rail > i{ position:absolute; inset:0 auto 0 0; width:23.5%; display:block; border-radius:inherit; background:#fff; }
+  .capsule-label{
+    display:inline-flex; align-items:center; gap:9px; height:52px; padding:0 20px 0 16px; border-radius:999px;
+    background:var(--fill); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+    box-shadow: var(--rim), var(--shadow); color:#fff; font-size:18px; font-weight:500; position:relative; overflow:hidden;
+  }
+  .card{
+    position:relative; width:260px; padding:16px; border-radius:24px; overflow:hidden;
+    background:var(--fill); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+    box-shadow: var(--rim), var(--shadow); color:#fff;
+  }
+  .card-row{ position:relative; z-index:1; display:flex; align-items:center; gap:12px; }
+  .card-thumb{ width:52px; height:52px; border-radius:10px; background:rgba(255,255,255,.35); flex:0 0 auto; }
+  .card-title{ font-size:15px; font-weight:500; }
+  .card-sub{ font-size:12.5px; opacity:.75; margin-top:2px; }
+  .card-controls{ position:relative; z-index:1; display:flex; align-items:center; gap:16px; margin-top:14px; }
+  .card-controls .glass{ width:38px; height:38px; background:transparent; box-shadow:none; backdrop-filter:none; -webkit-backdrop-filter:none; }
+  .card-controls .glass.play{ width:44px; height:44px; }
+  .group-panel{
+    display:inline-grid; grid-template-columns:repeat(2,1fr); gap:8px; padding:10px; border-radius:28px;
+    background:var(--fill); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+    box-shadow: var(--rim), var(--shadow);
+  }
+  .group-panel .glass{ width:60px; height:60px; }
+  .toggle-slider{
+    position:relative; width:64px; height:150px; border-radius:999px; overflow:hidden;
+    background:var(--fill); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+    box-shadow: var(--rim), var(--shadow);
+  }
+  .toggle-slider .fill{ position:absolute; left:0; right:0; bottom:0; height:60%; background:rgba(255,255,255,.55); }
+  .toggle-slider .icon-wrap{ position:absolute; left:0; right:0; bottom:60%; transform:translateY(50%); display:flex; justify-content:center; z-index:1; }
+  .video-demo{ position:relative; width:min(900px,calc(100vw - 48px)); aspect-ratio:2.08/1; overflow:hidden; border-radius:26px;
+    background:#b81b6c; box-shadow:0 18px 42px rgba(0,0,0,.22); }
+  .vd-tl{ position:absolute; z-index:2; top:22px; left:22px; display:flex; gap:12px; }
+  .vd-tr{ position:absolute; z-index:2; top:22px; right:22px; }
+  .vd-volume{ display:flex; align-items:center; gap:12px; width:280px; height:48px; padding:0 16px 0 18px; border-radius:999px;
+    background:var(--fill); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur); box-shadow:var(--rim),var(--shadow); }
+  .vd-volume .track{ flex:1; width:auto; }
+  .vd-center{ position:absolute; z-index:2; inset:0; display:flex; align-items:center; justify-content:center; gap:clamp(70px,12vw,150px); }
+  .vd-br{ position:absolute; z-index:2; right:22px; bottom:92px; }
+  .vd-morepill{ display:flex; align-items:center; gap:4px; box-sizing:border-box; height:48px; padding:2px; border-radius:999px;
+    background:var(--fill); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur); box-shadow:var(--rim),var(--shadow); }
+  .vd-morepill button{ width:44px; height:44px; border:0; background:transparent; color:#fff; display:grid; place-items:center; cursor:pointer; border-radius:999px; }
+  .vd-bottom{ position:absolute; z-index:2; left:22px; right:22px; bottom:18px; }
+  .vd-bottom .progress-pill{ width:100%; }
+  .mini-cover{ width:290px; aspect-ratio:1; border-radius:26px; margin-bottom:14px;
+    background:#0c0c0d center/cover no-repeat url("../clairobscur-ost.jpg"); box-shadow:0 16px 34px rgba(0,0,0,.3); }
+  .mini-player{ position:relative; width:290px; padding:18px 20px 16px; border-radius:30px; overflow:hidden;
+    background:var(--fill); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+    box-shadow:var(--rim),var(--shadow); color:#fff; }
+  .mini-title{ position:relative; z-index:1; padding:0 22px; text-align:center; font-size:16px; font-weight:500;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .mini-sub{ position:relative; z-index:1; margin-top:3px; text-align:center; font-size:13px; color:rgba(255,255,255,.6); }
+  .mini-eq{ position:absolute; z-index:1; top:18px; right:18px; opacity:.9; }
+  .mini-eq rect{ transform-origin:center; animation:eq 1s ease-in-out infinite; }
+  .mini-eq rect:nth-child(2){ animation-delay:.18s } .mini-eq rect:nth-child(3){ animation-delay:.36s } .mini-eq rect:nth-child(4){ animation-delay:.1s }
+  @keyframes eq{ 0%,100%{ transform:scaleY(.35) } 50%{ transform:scaleY(1) } }
+  .mini-eq-static rect{ animation:none; } 
+  .mini-progress{ position:relative; z-index:1; margin-top:15px; display:flex; align-items:center; gap:11px;
+    font:500 11px/1 'AnthropicMono',ui-monospace,monospace; font-variant-numeric:tabular-nums; color:rgba(255,255,255,.72); }
+  .mini-progress > span:last-child{ text-align:right; }
+  .mini-rail{ position:relative; flex:1; min-width:0; height:5px; border-radius:999px; background:rgba(255,255,255,.26); overflow:hidden; }
+  .mini-rail > i{ position:absolute; inset:0 auto 0 0; width:12%; display:block; border-radius:inherit; background:#fff; }
+  .mini-transport{ position:relative; z-index:1; margin-top:16px; height:34px; }
+  .mini-group{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); display:flex; align-items:center; gap:34px; }
+  .mini-route{ position:absolute; right:0; top:50%; transform:translateY(-50%); }
+  .mini-transport button{ background:transparent; border:0; color:#fff; display:grid; place-items:center; padding:0; cursor:pointer; }
+  .mini-h{ position:relative; display:grid; grid-template-columns:minmax(170px,1fr) minmax(300px,1.7fr) minmax(140px,auto);
+    align-items:center; gap:20px; width:min(880px,calc(100vw - 48px)); padding:10px 18px; border-radius:22px; overflow:hidden;
+    background:var(--fill); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur); box-shadow:var(--rim),var(--shadow); color:#fff; }
+  .mini-h-now{ position:relative; z-index:1; display:flex; align-items:center; gap:12px; min-width:0; }
+  .mini-h-cover{ flex:0 0 auto; width:48px; height:48px; border-radius:10px;
+    background:#0c0c0d center/cover no-repeat url("../clairobscur-ost.jpg"); }
+  .mini-h-meta{ min-width:0; }
+  .mini-h-title{ display:flex; align-items:center; gap:8px; font-size:14px; font-weight:500; min-width:0; }
+  .mini-h-title > span{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .mini-h-sub{ margin-top:2px; font-size:12px; color:rgba(255,255,255,.6); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .mini-h-eq{ flex:0 0 auto; opacity:.9; }
+  .mini-h-eq rect{ transform-origin:center; animation:eq 1s ease-in-out infinite; }
+  .mini-h-eq rect:nth-child(2){ animation-delay:.18s } .mini-h-eq rect:nth-child(3){ animation-delay:.36s } .mini-h-eq rect:nth-child(4){ animation-delay:.1s }
+  .mini-h-eq.mini-eq-static rect{ animation:none; }
+  .mini-h-center{ position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:7px; min-width:0; }
+  .mini-h-transport{ display:flex; align-items:center; gap:30px; }
+  .mini-h-transport button{ background:transparent; border:0; color:#fff; display:grid; place-items:center; padding:0; cursor:pointer; }
+  .mini-h-progress{ display:flex; align-items:center; gap:10px; width:100%;
+    font:500 11px/1 'AnthropicMono',ui-monospace,monospace; font-variant-numeric:tabular-nums; color:rgba(255,255,255,.72); }
+  .mini-h-progress > span:last-child{ text-align:right; }
+  .mini-h-rail{ position:relative; flex:1; min-width:0; height:5px; border-radius:999px; background:rgba(255,255,255,.26); overflow:hidden; }
+  .mini-h-rail > i{ position:absolute; inset:0 auto 0 0; width:14%; display:block; border-radius:inherit; background:#fff; }
+  .mini-h-tools{ position:relative; z-index:1; display:flex; align-items:center; justify-content:flex-end; gap:14px; }
+  .mini-h-tools button{ background:transparent; border:0; color:#fff; display:grid; place-items:center; padding:0; cursor:pointer; }
+  .mini-h2{ position:relative; display:flex; align-items:center; justify-content:space-between; gap:20px;
+    width:min(880px,calc(100vw - 48px)); padding:10px 18px; border-radius:22px; overflow:hidden;
+    background:var(--fill); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur); box-shadow:var(--rim),var(--shadow); color:#fff; }
+  .mini-h2-now{ position:relative; z-index:1; display:flex; align-items:center; gap:12px; min-width:0; flex:0 1 260px; }
+  .mini-h2-center{ position:absolute; z-index:1; left:50%; top:50%; transform:translate(-50%,-50%);
+    display:flex; flex-direction:column; align-items:center; gap:7px; width:min(360px,calc(100% - 520px)); min-width:220px; }
+  .mini-h2-transport{ display:flex; align-items:center; gap:20px; }
+  .mini-h2-transport button{ background:transparent; border:0; color:#fff; display:grid; place-items:center; padding:0; cursor:pointer; }
+  .mini-h2-transport .is-on{ color:#fff; } .mini-h2-transport button:not(.is-on){ color:rgba(255,255,255,.75); }
+  .mini-h2-progress{ display:flex; align-items:center; gap:9px; width:100%;
+    font:500 10.5px/1 'AnthropicMono',ui-monospace,monospace; font-variant-numeric:tabular-nums; color:rgba(255,255,255,.65); }
+  .mini-h2-progress > span:last-child{ text-align:right; }
+  .mini-h2-rail{ position:relative; flex:1; min-width:0; height:4px; border-radius:999px; background:rgba(255,255,255,.24); overflow:hidden; }
+  .mini-h2-rail > i{ position:absolute; inset:0 auto 0 0; width:14%; display:block; border-radius:inherit; background:#fff; }
+  .mini-h2-tools{ position:relative; z-index:1; display:flex; align-items:center; justify-content:flex-end; gap:14px; flex:0 0 auto; }
+  .mini-h2-tools button{ background:transparent; border:0; color:#fff; display:grid; place-items:center; padding:0; cursor:pointer; }
+  .mini-h2-volume{ display:flex; align-items:center; gap:7px; }
+  .mini-h2-volume-track{ position:relative; width:78px; height:4px; border-radius:999px; background:rgba(255,255,255,.24); overflow:hidden; }
+  .mini-h2-volume-track > i{ position:absolute; inset:0 auto 0 0; width:62%; display:block; border-radius:inherit; background:#fff; }
+  .mini-player-v2{ position:relative; width:290px; padding:18px 20px 16px; border-radius:30px; overflow:hidden;
+    background:var(--fill); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur);
+    box-shadow:var(--rim),var(--shadow); color:#fff; }
+</style>
+<style>.sbs-demo{ width:236px; padding:14px; border-radius:18px; display:flex; flex-direction:column; gap:8px; background:#1c1c1e; color:#f6f6f6; }
+  .sbs-search{ position:relative; overflow:hidden; display:flex; align-items:center; gap:7px; height:36px; padding:0 12px; border-radius:999px;
+    background:var(--fill); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur); box-shadow:var(--rim); }
+  .sbs-input{ position:relative; z-index:1; font:500 14px/1 'AnthropicSans',-apple-system,sans-serif; color:#f6f6f6; }
+  .sbs-drop{ position:relative; overflow:hidden; padding:10px 8px; border-radius:16px; display:flex; flex-direction:column;
+    background:var(--fill); backdrop-filter:var(--blur); -webkit-backdrop-filter:var(--blur); box-shadow:var(--rim); }
+  .sbs-group{ position:relative; z-index:1; padding:7px 4px; }
+  .sbs-group + .sbs-group{ border-top:1px solid rgba(255,255,255,.1); }
+  .sbs-group-head{ display:flex; align-items:center; justify-content:space-between; padding:0 2px 3px; }
+  .sbs-group-head h4{ margin:0; font:500 11px/1 'AnthropicSans',-apple-system,sans-serif; text-transform:uppercase; letter-spacing:.05em; color:rgba(255,255,255,.5); }
+  .sbs-chevron{ width:22px; height:20px; display:grid; place-items:center; background:transparent; border:0; color:rgba(255,255,255,.55); cursor:pointer; transition:transform .18s; }
+  .sbs-chevron.up{ transform:rotate(180deg); }
+  .sbs-row{ display:grid; grid-template-columns:34px minmax(0,1fr) 22px; align-items:center; gap:9px; padding:5px 2px; border-radius:8px; cursor:pointer; }
+  .sbs-row:hover{ background:rgba(255,255,255,.08); }
+  .sbs-thumb{ width:34px; height:20px; border-radius:4px; background:rgba(255,255,255,.16); }
+  .sbs-thumb.round{ width:22px; height:22px; border-radius:5px; }
+  .sbs-row span{ min-width:0; display:flex; flex-direction:column; }
+  .sbs-row strong{ font:500 13px/1.25 'AnthropicSans',-apple-system,sans-serif; color:#f6f6f6; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .sbs-row small{ font:400 11.5px/1.3 'AnthropicSans',-apple-system,sans-serif; color:rgba(255,255,255,.5); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .sbs-add{ width:22px; height:22px; border-radius:999px; display:grid; place-items:center; background:transparent; border:0; color:rgba(255,255,255,.55); font-size:14px; cursor:pointer; }
+  .sbs-add:hover{ background:rgba(255,255,255,.14); color:#fff; }
+  .sbs-pagination{ display:flex; align-items:center; justify-content:flex-end; gap:8px; padding:6px 4px 0; font:500 11px/1 'AnthropicMono',ui-monospace,monospace; color:rgba(255,255,255,.55); }
+  .sbs-page-btn{ width:22px; height:20px; display:grid; place-items:center; background:transparent; border:0; color:inherit; cursor:pointer; }
+  .sbs-page-btn:disabled{ opacity:.3; }
+</style><style id="museum-presentation">
+:root{
+  --museum-bg:#070708;
+  --museum-bg-2:#0d0d10;
+  --museum-panel:#111116;
+  --museum-text:#f5f5f7;
+  --museum-muted:#9b9ba5;
+  --museum-line:rgba(255,255,255,.09);
+  --museum-line-strong:rgba(255,255,255,.17);
+  --museum-max:1480px;
+  --museum-radius:26px;
+}
+html{scroll-behavior:smooth;background:var(--museum-bg)}
+body{
+  margin:0;
+  min-height:100vh;
+  display:block;
+  padding:0;
+  color:var(--museum-text);
+  background:
+    radial-gradient(1100px 720px at 84% -8%,rgba(102,82,166,.16),transparent 60%),
+    radial-gradient(850px 580px at -8% 20%,rgba(36,89,112,.11),transparent 62%),
+    linear-gradient(180deg,#09090b 0%,#050506 64%,#08080a 100%);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:100;
+  opacity:.028;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+}
+*{box-sizing:border-box}
+a{color:inherit}
+button,input{font:inherit}
+.museum-shell{width:min(var(--museum-max),calc(100% - 36px));margin:0 auto}
+.museum-topbar{
+  position:sticky;
+  top:0;
+  z-index:90;
+  border-bottom:1px solid rgba(255,255,255,.055);
+  background:linear-gradient(180deg,rgba(7,7,8,.91),rgba(7,7,8,.63));
+  -webkit-backdrop-filter:blur(22px) saturate(145%);
+  backdrop-filter:blur(22px) saturate(145%);
+}
+.museum-topbar-inner{
+  min-height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+.museum-brand{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.11em;text-transform:uppercase;white-space:nowrap}
+.museum-mark{
+  width:11px;height:11px;border-radius:50%;
+  background:radial-gradient(circle at 30% 25%,#fff 0 11%,#b9dfff 17%,#a354ed 50%,#171323 100%);
+  box-shadow:0 0 18px rgba(164,95,239,.58);
+}
+.museum-topnav{display:flex;gap:4px;overflow:auto;scrollbar-width:none}
+.museum-topnav::-webkit-scrollbar{display:none}
+.museum-topnav a{
+  padding:8px 11px;
+  border:1px solid transparent;
+  border-radius:999px;
+  color:#9c9ca5;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:.2s ease;
+}
+.museum-topnav a:hover,.museum-topnav a.active{color:#fff;border-color:var(--museum-line);background:rgba(255,255,255,.045)}
+.museum-layout{
+  display:grid;
+  grid-template-columns:230px minmax(0,1fr);
+  gap:52px;
+  align-items:start;
+}
+.museum-index{
+  position:sticky;
+  top:82px;
+  padding:26px 0 50px;
+  max-height:calc(100vh - 90px);
+  overflow:auto;
+  scrollbar-width:none;
+}
+.museum-index::-webkit-scrollbar{display:none}
+.museum-index-kicker{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#777782;margin-bottom:14px}
+.museum-index-list{display:grid;gap:7px}
+.museum-index-item{
+  display:grid;
+  grid-template-columns:28px minmax(0,1fr) auto;
+  align-items:center;
+  gap:7px;
+  padding:9px 9px;
+  border:1px solid transparent;
+  border-radius:12px;
+  color:#868690;
+  text-decoration:none;
+  transition:.2s ease;
+}
+.museum-index-item:hover,.museum-index-item.active{color:#fff;background:rgba(255,255,255,.04);border-color:var(--museum-line)}
+.museum-index-item span:first-child{font:500 10px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#696974}
+.museum-index-item strong{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.museum-index-item em{font:400 10px/1 ui-monospace,SFMono-Regular,Menlo,monospace;font-style:normal;color:#666671}
+.museum-index-note{
+  margin-top:24px;
+  padding:15px;
+  border:1px solid var(--museum-line);
+  border-radius:16px;
+  background:rgba(255,255,255,.025);
+  color:#7f7f89;
+  font-size:11px;
+  line-height:1.55;
+}
+.museum-main{min-width:0;padding-bottom:86px}
+.museum-hero{
+  min-height:70vh;
+  display:grid;
+  grid-template-columns:minmax(0,1.08fr) minmax(330px,.92fr);
+  align-items:center;
+  gap:56px;
+  padding:84px 0 72px;
+}
+.museum-eyebrow{margin-bottom:17px;color:#c6b7ff;font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+.museum-hero h1{
+  margin:0;
+  max-width:860px;
+  font-size:clamp(48px,6.7vw,102px);
+  line-height:.9;
+  letter-spacing:-.065em;
+  font-weight:600;
+  color:#f7f7f8;
+}
+.museum-hero p{max-width:620px;margin:26px 0 0;color:#a7a7b1;font-size:clamp(15px,1.45vw,19px);line-height:1.55}
+.museum-metrics{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
+.museum-metric{
+  padding:10px 12px;
+  border:1px solid var(--museum-line);
+  border-radius:12px;
+  background:rgba(255,255,255,.025);
+  color:#85858f;
+  font-size:11px;
+}
+.museum-metric b{color:#ececf0;font-weight:500}
+.museum-object{
+  position:relative;
+  min-height:430px;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:40px;
+  overflow:hidden;
+  isolation:isolate;
+  background:
+    radial-gradient(circle at 18% 22%,rgba(110,216,255,.72),transparent 23%),
+    radial-gradient(circle at 78% 23%,rgba(177,91,255,.65),transparent 27%),
+    radial-gradient(circle at 68% 82%,rgba(255,83,164,.46),transparent 31%),
+    linear-gradient(145deg,#0b0b10,#191320 47%,#070708);
+  box-shadow:0 40px 100px rgba(0,0,0,.48);
+}
+.museum-object::before{
+  content:"";
+  position:absolute;
+  inset:54px 38px 52px;
+  border-radius:34px;
+  border:1px solid rgba(255,255,255,.31);
+  background:linear-gradient(145deg,rgba(255,255,255,.21),rgba(255,255,255,.055) 52%,rgba(255,255,255,.11));
+  -webkit-backdrop-filter:blur(26px) saturate(155%);
+  backdrop-filter:blur(26px) saturate(155%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 0 rgba(255,255,255,.1),0 28px 80px rgba(0,0,0,.3);
+}
+.museum-object::after{
+  content:"UI / MATERIAL / MOTION";
+  position:absolute;
+  left:26px;right:26px;bottom:26px;
+  z-index:2;
+  padding:19px 20px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:18px;
+  background:rgba(8,8,11,.55);
+  -webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(18px);
+  color:#d8d8df;
+  font-size:11px;
+  letter-spacing:.1em;
+}
+.museum-section{padding:72px 0 16px;scroll-margin-top:76px}
+.museum-section-head{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(260px,520px);
+  gap:34px;
+  align-items:end;
+  margin-bottom:26px;
+}
+.museum-section-index{display:block;margin-bottom:11px;color:#9f8ee7;font:500 10px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em}
+.museum-section h2{margin:0;font-size:clamp(34px,4.1vw,62px);line-height:.96;letter-spacing:-.045em;font-weight:560;color:#f4f4f6}
+.museum-section-head p{margin:0;color:#8f8f99;font-size:14px;line-height:1.6}
+.museum-stage{
+  margin-bottom:14px;
+  overflow:hidden;
+  border:1px solid var(--museum-line);
+  border-radius:var(--museum-radius);
+  background:#0c0c0f;
+  box-shadow:0 22px 70px rgba(0,0,0,.18);
+}
+.museum-stage-head{
+  min-height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:0 17px;
+  border-bottom:1px solid rgba(255,255,255,.065);
+  color:#8d8d97;
+  background:rgba(255,255,255,.018);
+}
+.museum-stage-head strong{font-size:11px;font-weight:500;letter-spacing:.025em;color:#c8c8ce}
+.museum-stage-head span{font:400 10px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#666670}
+.museum-stage-canvas{
+  position:relative;
+  min-height:190px;
+  padding:42px 28px;
+  overflow:auto;
+  isolation:isolate;
+  background:
+    radial-gradient(circle at 16% 24%,rgba(85,190,238,.22),transparent 29%),
+    radial-gradient(circle at 84% 20%,rgba(154,82,222,.25),transparent 30%),
+    radial-gradient(circle at 72% 86%,rgba(216,49,125,.2),transparent 33%),
+    linear-gradient(145deg,#16131c,#251226 48%,#101116);
+}
+.museum-stage-canvas::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.25;
+  background:
+    linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:34px 34px;
+  -webkit-mask-image:linear-gradient(to bottom,transparent,black 18%,black 82%,transparent);
+  mask-image:linear-gradient(to bottom,transparent,black 18%,black 82%,transparent);
+}
+.museum-stage[data-tone="neutral"] .museum-stage-canvas{
+  background:
+    radial-gradient(circle at 20% 12%,rgba(112,136,169,.18),transparent 32%),
+    radial-gradient(circle at 88% 80%,rgba(94,75,139,.17),transparent 34%),
+    linear-gradient(145deg,#15161a,#0c0c0f);
+}
+.museum-stage[data-tone="blue"] .museum-stage-canvas{
+  background:
+    radial-gradient(circle at 12% 30%,rgba(59,166,222,.26),transparent 31%),
+    radial-gradient(circle at 85% 30%,rgba(104,84,212,.24),transparent 34%),
+    linear-gradient(145deg,#101820,#121120 55%,#0a0a0d);
+}
+.museum-stage[data-tone="rose"] .museum-stage-canvas{
+  background:
+    radial-gradient(circle at 16% 18%,rgba(255,78,163,.3),transparent 30%),
+    radial-gradient(circle at 82% 76%,rgba(125,83,231,.25),transparent 34%),
+    linear-gradient(145deg,#24101c,#15101d 55%,#0b0b0d);
+}
+.museum-stage .row{
+  position:relative;
+  z-index:2;
+  width:max-content;
+  min-width:min(100%,1100px);
+  max-width:none;
+  margin:0 auto;
+  justify-content:center;
+  align-items:flex-start;
+}
+.museum-stage .col{min-width:0}
+.museum-stage label{
+  max-width:220px;
+  color:rgba(255,255,255,.62);
+  font-size:10px;
+  line-height:1.35;
+  letter-spacing:.015em;
+}
+.museum-stage .video-demo{max-width:900px}
+.museum-stage .play-timing-row{max-width:none}
+.museum-footer{
+  margin-top:72px;
+  padding:28px 0 4px;
+  border-top:1px solid rgba(255,255,255,.07);
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:wrap;
+  color:#666670;
+  font-size:11px;
+}
+@media (max-width:1120px){
+  .museum-layout{grid-template-columns:1fr;gap:0}
+  .museum-index{display:none}
+  .museum-hero{grid-template-columns:1fr;min-height:auto}
+  .museum-object{min-height:360px}
+}
+@media (max-width:720px){
+  .museum-shell{width:min(var(--museum-max),calc(100% - 22px))}
+  .museum-topbar-inner{align-items:flex-start;padding:10px 0}
+  .museum-brand{padding-top:8px}
+  .museum-hero{padding:68px 0 44px;gap:30px}
+  .museum-object{min-height:320px}
+  .museum-section{padding-top:56px}
+  .museum-section-head{grid-template-columns:1fr;gap:14px}
+  .museum-stage-canvas{padding:34px 18px}
+  .museum-stage .row{min-width:900px}
+  .museum-stage .row.play-timing-row{min-width:560px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.museum-topnav a,.museum-index-item{transition:none}}
+@media (prefers-reduced-transparency:reduce){
+  .museum-topbar{background:#09090b;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .museum-object::before,.museum-object::after{-webkit-backdrop-filter:none;backdrop-filter:none;background:#17171c}
+}
+</style><style id="zenray-glass-system">
+/* ================================================================
+   ZENRAY GLASS SYSTEM V4
+   - Glassmorphism interior
+   - real transformed backdrop samples
+   - 1 px optical rim with exact top/bottom symmetry
+   - black outline only on genuinely dark backgrounds
+   ================================================================ */
+:root{
+  --zr-dark-fill:
+    linear-gradient(135deg,rgba(255,255,255,.20),rgba(255,255,255,.065));
+  --zr-light-fill:
+    linear-gradient(135deg,rgba(255,255,255,.72),rgba(235,238,243,.38));
+  --zr-blur:blur(27px) saturate(169%);
+}
+
+.zenray-glass-surface{
+  --zr-ring:10px;
+  --zr-fill:var(--zr-dark-fill);
+  --zr-rim-end:rgba(255,255,255,.46);
+  --zr-rim-step:rgba(255,255,255,.18);
+  --zr-rim-mid:rgba(255,255,255,.085);
+  --zr-rim-opacity:.78;
+  --zr-inner-v:rgba(255,255,255,.055);
+  --zr-inner-h:rgba(255,255,255,.018);
+  --zr-outline:0 0 0 .72px rgba(0,0,0,.62);
+  --zr-shadow-a:0 12px 34px rgba(0,0,0,.27);
+  --zr-shadow-b:0 3px 11px rgba(0,0,0,.15);
+
+  position:relative !important;
+  isolation:isolate !important;
+  overflow:hidden !important;
+  border:0 !important;
+  background:transparent !important;
+  -webkit-backdrop-filter:none !important;
+  backdrop-filter:none !important;
+  box-shadow:
+    var(--zr-outline),
+    var(--zr-shadow-a),
+    var(--zr-shadow-b) !important;
+}
+
+/* Larger surfaces keep the same rim but receive broader elevation. */
+.zenray-glass-surface:is(
+  .card,.group-panel,.toggle-slider,
+  .mini-player,.mini-player-v2,.sbs-drop
+){
+  --zr-shadow-a:0 20px 58px rgba(0,0,0,.29);
+  --zr-shadow-b:0 6px 20px rgba(0,0,0,.16);
+}
+
+.zenray-glass-surface:is(.mini-h,.mini-h2){
+  --zr-shadow-a:0 24px 72px rgba(0,0,0,.31);
+  --zr-shadow-b:0 7px 23px rgba(0,0,0,.17);
+}
+
+/*
+  Bright/magenta contexts and the dedicated light mode:
+  never display a black outline.
+*/
+.zenray-theme-light .zenray-glass-surface,
+.zenray-glass-surface.zenray-on-bright{
+  --zr-fill:var(--zr-light-fill);
+  --zr-rim-end:rgba(255,255,255,.94);
+  --zr-rim-step:rgba(255,255,255,.58);
+  --zr-rim-mid:rgba(164,169,179,.24);
+  --zr-rim-opacity:.92;
+  --zr-inner-v:rgba(255,255,255,.46);
+  --zr-inner-h:rgba(145,151,163,.10);
+  --zr-outline:0 0 0 0 transparent;
+  --zr-shadow-a:0 15px 38px rgba(68,72,82,.13);
+  --zr-shadow-b:0 3px 12px rgba(68,72,82,.08);
+}
+
+.zenray-glass-surface > .noise{
+  display:none !important;
+}
+
+.zr-refraction,
+.zr-glass-fill,
+.zr-optical-rim{
+  position:absolute !important;
+  inset:0 !important;
+  border-radius:inherit !important;
+  pointer-events:none !important;
+}
+
+/* Explicitly prevents progress-pill grid rules from catching optical spans. */
+.progress-pill > :is(.zr-refraction,.zr-glass-fill,.zr-optical-rim){
+  position:absolute !important;
+  inset:0 !important;
+}
+
+.zr-refraction{
+  overflow:hidden;
+}
+
+.zr-refraction-core{
+  z-index:-4;
+  opacity:.48;
+}
+
+.zr-refraction-rim{
+  z-index:-3;
+  padding:var(--zr-ring);
+  opacity:.57;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+}
+
+.zr-refraction-sample{
+  position:absolute;
+  inset:auto;
+  transform-origin:0 0;
+  will-change:transform;
+}
+
+.zr-refraction-core .zr-refraction-sample{
+  filter:blur(.55px) saturate(.97) brightness(.90) contrast(.99);
+}
+
+.zr-refraction-rim .zr-refraction-sample{
+  filter:blur(.82px) saturate(1.02) brightness(.96) contrast(1.04);
+}
+
+.zr-glass-fill{
+  z-index:-2;
+  background:var(--zr-fill);
+  -webkit-backdrop-filter:var(--zr-blur);
+  backdrop-filter:var(--zr-blur);
+}
+
+/*
+  One-pixel optical rim.
+  Every stop above 50% is reflected at 100% - position:
+  0 ↔ 100, 16 ↔ 84, 42 ↔ 58.
+*/
+.zr-optical-rim{
+  z-index:40;
+  padding:1px;
+  background:
+    linear-gradient(
+      180deg,
+      var(--zr-rim-end) 0%,
+      var(--zr-rim-step) 16%,
+      var(--zr-rim-mid) 42%,
+      var(--zr-rim-mid) 58%,
+      var(--zr-rim-step) 84%,
+      var(--zr-rim-end) 100%
+    );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  opacity:var(--zr-rim-opacity);
+}
+
+.zr-optical-rim::after{
+  content:"";
+  position:absolute;
+  inset:1px;
+  border-radius:inherit;
+  box-shadow:
+    inset 0 1px 0 var(--zr-inner-v),
+    inset 0 -1px 0 var(--zr-inner-v),
+    inset 1px 0 0 var(--zr-inner-h),
+    inset -1px 0 0 var(--zr-inner-h);
+}
+
+/* Preserve semantic active states without reintroducing a black light-mode rim. */
+.zenray-glass-surface.glass.active{
+  background:#fff !important;
+  color:#1d1d1f !important;
+  -webkit-backdrop-filter:none !important;
+  backdrop-filter:none !important;
+  --zr-outline:0 0 0 0 transparent;
+  --zr-shadow-a:0 8px 24px rgba(50,54,64,.14);
+  --zr-shadow-b:0 2px 8px rgba(50,54,64,.08);
+}
+
+.zenray-glass-surface.glass.active-tint{
+  background:#0a84ff !important;
+  color:#fff !important;
+  -webkit-backdrop-filter:none !important;
+  backdrop-filter:none !important;
+  --zr-outline:0 0 0 0 transparent;
+  --zr-shadow-a:0 8px 24px rgba(10,132,255,.28);
+  --zr-shadow-b:0 2px 8px rgba(10,132,255,.16);
+}
+
+.zenray-glass-surface.glass:is(.active,.active-tint)
+  > :is(.zr-refraction,.zr-glass-fill){
+  display:none;
+}
+
+.zenray-glass-surface.glass.active > .zr-optical-rim{opacity:.43}
+.zenray-glass-surface.glass.active-tint > .zr-optical-rim{opacity:.57}
+
+.zenray-glass-surface > :not(
+  .zr-refraction,.zr-glass-fill,.zr-optical-rim,.noise
+){
+  z-index:1;
+}
+
+/* Ring strength follows component size. */
+.zenray-glass-surface.glass.sm{--zr-ring:6px}
+.zenray-glass-surface.glass.md{--zr-ring:8px}
+.zenray-glass-surface.glass.lg{--zr-ring:11px}
+.zenray-glass-surface:is(
+  .pill,.progress-pill,.capsule-label,
+  .vd-volume,.vd-morepill,.sbs-search
+){--zr-ring:8px}
+.zenray-glass-surface:is(
+  .card,.group-panel,.toggle-slider,
+  .mini-player,.mini-player-v2,.sbs-drop
+){--zr-ring:11px}
+.zenray-glass-surface:is(.mini-h,.mini-h2){--zr-ring:10px}
+
+/* ================================================================
+   PROGRESS PILL — rebuilt from the supplied magenta reference.
+   ================================================================ */
+.progress-pill.progress-pill-reference{
+  position:relative;
+  display:grid;
+  grid-template-columns:76px minmax(0,1fr) 86px;
+  align-items:center;
+  gap:20px;
+  width:min(760px,calc(100vw - 48px));
+  height:56px;
+  padding:0 24px;
+  overflow:hidden;
+  border:0;
+  border-radius:999px;
+  color:#fff;
+  font-family:'AnthropicMono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:13px;
+  font-weight:400;
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.01em;
+}
+
+.progress-time{
+  position:relative;
+  z-index:2;
+  display:block;
+  min-width:0;
+  color:inherit;
+  font:inherit;
+  white-space:nowrap;
+}
+
+.progress-time-remaining{
+  text-align:right;
+}
+
+.progress-pill .progress-rail{
+  position:relative;
+  z-index:2;
+  width:100%;
+  min-width:0;
+  height:8px;
+  overflow:hidden;
+  border-radius:999px;
+  background:rgba(255,255,255,.29);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.055);
+}
+
+.progress-pill .progress-rail > i{
+  position:absolute;
+  inset:0 auto 0 0;
+  display:block;
+  width:23%;
+  border-radius:inherit;
+  background:#fff;
+  box-shadow:0 0 1px rgba(255,255,255,.5);
+}
+
+.vd-bottom{
+  left:18px;
+  right:18px;
+  bottom:16px;
+}
+
+.vd-bottom .progress-pill.progress-pill-reference{
+  width:100%;
+  height:62px;
+  grid-template-columns:82px minmax(0,1fr) 94px;
+  gap:22px;
+  padding:0 26px;
+  font-size:14px;
+}
+
+.vd-bottom .progress-pill .progress-rail{
+  height:8px;
+}
+
+/* ================================================================
+   TYPE — component copy is regular/light only.
+   Museum presentation typography is intentionally not affected.
+   ================================================================ */
+:is(.museum-stage-canvas,.light-canvas),
+:is(.museum-stage-canvas,.light-canvas) *{
+  font-synthesis:none;
+}
+
+:is(.museum-stage-canvas,.light-canvas)
+:is(
+  button,input,label,time,span,small,strong,b,
+  h1,h2,h3,h4,h5,h6,div,p
+){
+  font-weight:400 !important;
+}
+
+:is(.museum-stage-canvas,.light-canvas)
+:is(
+  .card-sub,.mini-sub,.mini-h-sub,.sbs-row small,
+  .mini-progress,.mini-h-progress,.mini-h2-progress,
+  label
+){
+  font-weight:300 !important;
+}
+
+/* Light-mode content colors. */
+.zenray-theme-light .zenray-glass-surface{
+  color:rgba(29,31,36,.84) !important;
+}
+
+.zenray-theme-light .zenray-glass-surface.glass.active-tint{
+  color:#fff !important;
+}
+
+.zenray-theme-light :is(
+  .card-sub,.mini-sub,.mini-h-sub,.sbs-row small,
+  .mini-progress,.mini-h-progress,.mini-h2-progress
+){
+  color:rgba(29,31,36,.54) !important;
+}
+
+.zenray-theme-light :is(.track,.progress-rail,.mini-rail,.mini-h-rail,.mini-h2-rail){
+  background:rgba(42,46,54,.16) !important;
+}
+
+.zenray-theme-light :is(
+  .track > i,.progress-rail > i,
+  .mini-rail > i,.mini-h-rail > i,.mini-h2-rail > i
+){
+  background:rgba(29,31,36,.72) !important;
+}
+
+.zenray-theme-light .progress-time{
+  color:rgba(29,31,36,.76);
+}
+
+@media (max-width:720px){
+  .progress-pill.progress-pill-reference{
+    width:min(760px,calc(100vw - 28px));
+    grid-template-columns:58px minmax(0,1fr) 66px;
+    gap:12px;
+    height:52px;
+    padding:0 17px;
+    font-size:11px;
+  }
+
+  .vd-bottom .progress-pill.progress-pill-reference{
+    grid-template-columns:62px minmax(0,1fr) 70px;
+    gap:14px;
+    height:56px;
+    padding:0 18px;
+    font-size:12px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .zr-refraction-sample{will-change:auto}
+}
+</style></head>
+<body class="zenray-theme-dark"><header class="museum-topbar"><div class="museum-shell museum-topbar-inner"><div class="museum-brand"><span class="museum-mark"></span>Liquid Glass · UI Archive</div><nav aria-label="Sections" class="museum-topnav"><a href="#primitives">Primitives</a><a href="#video">Video</a><a href="#players">Players</a><a href="#search">Search</a><a href="#motion">Motion</a></nav></div></header><div class="museum-shell museum-layout"><aside class="museum-index"><div class="museum-index-kicker">Collection index</div><nav aria-label="Index de la collection" class="museum-index-list"><a class="museum-index-item" href="#primitives"><span>01</span><strong>Primitives</strong><em>13</em></a><a class="museum-index-item" href="#video"><span>02</span><strong>Video controls</strong><em>01</em></a><a class="museum-index-item" href="#players"><span>03</span><strong>Media players</strong><em>07</em></a><a class="museum-index-item" href="#search"><span>04</span><strong>Search surfaces</strong><em>02</em></a><a class="museum-index-item" href="#motion"><span>05</span><strong>Motion timing</strong><em>09</em></a></nav><div class="museum-index-note">32 références. Une seule matière. Les composants restent inchangés ; seule leur mise en scène est réorganisée.</div></aside><main class="museum-main"><section class="museum-hero" id="top"><div><div class="museum-eyebrow">UI Reference Collection · 2026</div><h1>Liquid Glass Components.</h1><p>Une archive compacte de contrôles, players et surfaces translucides. Présentée comme une collection de matériaux, sans modifier les composants pré-calculés.</p><div class="museum-metrics"><span class="museum-metric"><b>32</b> références</span><span class="museum-metric"><b>5</b> familles</span><span class="museum-metric"><b>22 px</b> blur</span><span class="museum-metric"><b>26%</b> fill</span></div></div><div aria-hidden="true" class="museum-object"></div></section><section class="museum-section" id="primitives"><div class="museum-section-head"><div><span class="museum-section-index">01</span><h2>Primitives</h2></div><p>Boutons, capsules, états actifs, progression, groupe et slider. La grammaire de base avant composition.</p></div><article class="museum-stage" data-tone="rose"><div class="museum-stage-head"><strong>Control buttons</strong><span>05 objects</span></div><div class="museum-stage-canvas"><div class="row">
+<div class="col">
+<button class="glass sm"><div class="noise"></div>
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24" width="20"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+</button>
+<label>close (sm 48px)</label>
+</div>
+<div class="col">
+<button class="glass sm"><div class="noise"></div>
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24" width="20"><rect height="14" rx="2.4" width="17" x="3.5" y="5"></rect><rect fill="currentColor" height="5.5" rx="1.2" stroke="none" width="7" x="11.5" y="11.5"></rect></svg>
+</button>
+<label>pip (sm 48px)</label>
+</div>
+<div class="col">
+<button class="glass md"><div class="noise"></div>
+<!-- SF Symbols réel "10.arrow.trianglehead.counterclockwise" (export Matthieu 2026-07-17), pas une approximation -->
+<svg fill="currentColor" height="28" viewbox="0 0 30.8789 36.3732" width="24"><path d="M18.0938 0.954194C18.0938 0.00497537 17.4375-0.264556 16.6758 0.274507L11.9414 3.60263C11.2969 4.05966 11.3086 4.70419 11.9414 5.13779L16.6875 8.46591C17.4375 8.99326 18.0938 8.73544 18.0938 7.78623ZM15.2578 33.4386C23.6836 33.4386 30.5273 26.6065 30.5273 18.1808C30.5273 9.75498 23.6953 2.92294 15.2461 2.91123C14.6367 2.92294 14.168 3.41513 14.168 4.00107C14.168 4.59873 14.6484 5.10263 15.2578 5.10263C22.4883 5.10263 28.3359 10.9503 28.3359 18.1808C28.3359 25.4112 22.4883 31.2589 15.2578 31.2589C8.02734 31.2589 2.17969 25.4112 2.17969 18.1808C2.17969 13.6925 4.45312 9.74326 7.875 7.42294C8.40234 7.02451 8.56641 6.41513 8.23828 5.87607C7.93359 5.36044 7.19531 5.2081 6.62109 5.62998C2.625 8.38388 0 12.9425 0 18.1808C0 26.6065 6.83203 33.4386 15.2578 33.4386Z"></path><path d="M11.2852 24.3448C11.8594 24.3448 12.1992 23.9464 12.1992 23.3722L12.1992 13.5167C12.1992 12.8722 11.8008 12.4972 11.1562 12.4972C10.6289 12.4972 10.2539 12.7198 9.84375 13.0362L7.95703 14.419C7.69922 14.6183 7.53516 14.8409 7.53516 15.169C7.53516 15.5558 7.81641 15.8487 8.20312 15.8487C8.39062 15.8487 8.53125 15.7901 8.68359 15.6847L10.3477 14.4425L10.3594 14.4425L10.3594 23.3722C10.3594 23.9464 10.7109 24.3448 11.2852 24.3448ZM18.7852 24.4386C21.7383 24.4386 22.7461 21.3448 22.7461 18.4034C22.7461 15.462 21.7148 12.3917 18.7852 12.3917C15.8086 12.3917 14.8125 15.4972 14.8125 18.4034C14.8125 21.3683 15.8438 24.4386 18.7852 24.4386ZM18.7852 22.9386C17.3086 22.9386 16.6641 20.8409 16.6641 18.4034C16.6641 15.9894 17.3086 13.9151 18.7852 13.9151C20.25 13.9151 20.8945 16.0011 20.8945 18.4034C20.8945 20.8292 20.2617 22.9386 18.7852 22.9386Z"></path></svg>
+</button>
+<label>-10s (md 64px, SF réel)</label>
+</div>
+<div class="col">
+<button class="glass md"><div class="noise"></div>
+<svg fill="currentColor" height="28" viewbox="0 0 30.8789 36.3732" width="24"><g transform="translate(30.8789,0) scale(-1,1)"><path d="M18.0938 0.954194C18.0938 0.00497537 17.4375-0.264556 16.6758 0.274507L11.9414 3.60263C11.2969 4.05966 11.3086 4.70419 11.9414 5.13779L16.6875 8.46591C17.4375 8.99326 18.0938 8.73544 18.0938 7.78623ZM15.2578 33.4386C23.6836 33.4386 30.5273 26.6065 30.5273 18.1808C30.5273 9.75498 23.6953 2.92294 15.2461 2.91123C14.6367 2.92294 14.168 3.41513 14.168 4.00107C14.168 4.59873 14.6484 5.10263 15.2578 5.10263C22.4883 5.10263 28.3359 10.9503 28.3359 18.1808C28.3359 25.4112 22.4883 31.2589 15.2578 31.2589C8.02734 31.2589 2.17969 25.4112 2.17969 18.1808C2.17969 13.6925 4.45312 9.74326 7.875 7.42294C8.40234 7.02451 8.56641 6.41513 8.23828 5.87607C7.93359 5.36044 7.19531 5.2081 6.62109 5.62998C2.625 8.38388 0 12.9425 0 18.1808C0 26.6065 6.83203 33.4386 15.2578 33.4386Z"></path></g><path d="M11.2852 24.3448C11.8594 24.3448 12.1992 23.9464 12.1992 23.3722L12.1992 13.5167C12.1992 12.8722 11.8008 12.4972 11.1562 12.4972C10.6289 12.4972 10.2539 12.7198 9.84375 13.0362L7.95703 14.419C7.69922 14.6183 7.53516 14.8409 7.53516 15.169C7.53516 15.5558 7.81641 15.8487 8.20312 15.8487C8.39062 15.8487 8.53125 15.7901 8.68359 15.6847L10.3477 14.4425L10.3594 14.4425L10.3594 23.3722C10.3594 23.9464 10.7109 24.3448 11.2852 24.3448ZM18.7852 24.4386C21.7383 24.4386 22.7461 21.3448 22.7461 18.4034C22.7461 15.462 21.7148 12.3917 18.7852 12.3917C15.8086 12.3917 14.8125 15.4972 14.8125 18.4034C14.8125 21.3683 15.8438 24.4386 18.7852 24.4386ZM18.7852 22.9386C17.3086 22.9386 16.6641 20.8409 16.6641 18.4034C16.6641 15.9894 17.3086 13.9151 18.7852 13.9151C20.25 13.9151 20.8945 16.0011 20.8945 18.4034C20.8945 20.8292 20.2617 22.9386 18.7852 22.9386Z"></path></svg>
+</button>
+<label>+10s (md 64px, miroir)</label>
+</div>
+<div class="col">
+<button class="glass lg"><div class="noise"></div>
+<svg fill="currentColor" height="34" stroke="none" viewbox="0 0 24 24" width="34"><path d="M7 5.5l11 6.5-11 6.5z"></path></svg>
+</button>
+<label>play (lg 92px)</label>
+</div>
+</div></div></article><article class="museum-stage" data-tone="neutral"><div class="museum-stage-head"><strong>Pills &amp; states</strong><span>05 objects</span></div><div class="museum-stage-canvas"><div class="row">
+<div class="col">
+<div class="pill"><div class="noise"></div>
+<div class="track"><i></i></div>
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" style="position:relative;z-index:1" viewbox="0 0 24 24" width="18"><path d="M4 9.5h3l4-3.5v12l-4-3.5H4z" fill="currentColor" stroke="none"></path><path d="M14.5 8.5a4.5 4.5 0 010 7M17 6a8 8 0 010 12"></path></svg>
+</div>
+<label>volume pill</label>
+</div>
+<div class="col">
+<div aria-label="Progression audio : 4 minutes 29 écoulées, 15 minutes 3 restantes" class="progress-pill progress-pill-reference" role="group"><time class="progress-time progress-time-elapsed">04:29</time><div aria-hidden="true" class="progress-rail"><i style="width:23%;"></i></div><time class="progress-time progress-time-remaining">−15:03</time></div>
+<label>progress pill · RefPlayer.png</label>
+</div>
+<div class="col">
+<div class="capsule-label"><div class="noise"></div>
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" style="position:relative;z-index:1" viewbox="0 0 24 24" width="20"><path d="M19 12a7 7 0 11-2.05-4.95M19 4v4h-4"></path></svg>
+<span style="position:relative;z-index:1">2min</span>
+</div>
+<label>capsule icône+texte</label>
+</div>
+<div class="col">
+<button class="glass sm active" title="WiFi (actif)">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24" width="20"><path d="M5 8.5a12 12 0 0114 0M8 12a7.5 7.5 0 018 0"></path><circle cx="12" cy="16" fill="currentColor" r="1.3" stroke="none"></circle></svg>
+</button>
+<label>état actif (blanc opaque)</label>
+</div>
+<div class="col">
+<button class="glass sm active-tint" title="AirDrop (actif)">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24" width="20"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+</button>
+<label>état actif teinté (bleu)</label>
+</div>
+</div></div></article><article class="museum-stage" data-tone="blue"><div class="museum-stage-head"><strong>Composite primitives</strong><span>03 objects</span></div><div class="museum-stage-canvas"><div class="row">
+<div class="col">
+<div class="toggle-slider"><div class="noise"></div>
+<div class="fill"></div>
+<div class="icon-wrap"><svg fill="currentColor" height="18" stroke="none" viewbox="0 0 24 24" width="18"><circle cx="12" cy="12" r="5"></circle><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"></path></svg></div>
+</div>
+<label>toggle-slider (luminosité)</label>
+</div>
+<div class="col">
+<div class="group-panel">
+<button class="glass"><div class="noise"></div><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24" width="18"><path d="M2 12l9-9 2 2-3 3 6 6-2 2-6-6-3 3z"></path></svg></button>
+<button class="glass active-tint"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24" width="18"><path d="M5 8.5a12 12 0 0114 0M8 12a7.5 7.5 0 018 0"></path><circle cx="12" cy="16" fill="currentColor" r="1.3" stroke="none"></circle></svg></button>
+<button class="glass"><div class="noise"></div><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24" width="18"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle></svg></button>
+<button class="glass active-tint"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24" width="18"><path d="M5 8.5a12 12 0 0114 0M8 12a7.5 7.5 0 018 0"></path><circle cx="12" cy="16" fill="currentColor" r="1.3" stroke="none"></circle></svg></button>
+</div>
+<label>panneau de regroupement (2×2)</label>
+</div>
+<div class="col">
+<div class="card"><div class="noise"></div>
+<div class="card-row">
+<div class="card-thumb"></div>
+<div>
+<div class="card-title">PLAYSTATION 🔥</div>
+<div class="card-sub">Julien Chièze</div>
+</div>
+</div>
+<div class="card-controls">
+<button class="glass" title="Reculer 10s">
+<svg fill="currentColor" height="24" viewbox="0 0 30.8789 36.3732" width="20"><path d="M18.0938 0.954194C18.0938 0.00497537 17.4375-0.264556 16.6758 0.274507L11.9414 3.60263C11.2969 4.05966 11.3086 4.70419 11.9414 5.13779L16.6875 8.46591C17.4375 8.99326 18.0938 8.73544 18.0938 7.78623ZM15.2578 33.4386C23.6836 33.4386 30.5273 26.6065 30.5273 18.1808C30.5273 9.75498 23.6953 2.92294 15.2461 2.91123C14.6367 2.92294 14.168 3.41513 14.168 4.00107C14.168 4.59873 14.6484 5.10263 15.2578 5.10263C22.4883 5.10263 28.3359 10.9503 28.3359 18.1808C28.3359 25.4112 22.4883 31.2589 15.2578 31.2589C8.02734 31.2589 2.17969 25.4112 2.17969 18.1808C2.17969 13.6925 4.45312 9.74326 7.875 7.42294C8.40234 7.02451 8.56641 6.41513 8.23828 5.87607C7.93359 5.36044 7.19531 5.2081 6.62109 5.62998C2.625 8.38388 0 12.9425 0 18.1808C0 26.6065 6.83203 33.4386 15.2578 33.4386Z"></path><path d="M11.2852 24.3448C11.8594 24.3448 12.1992 23.9464 12.1992 23.3722L12.1992 13.5167C12.1992 12.8722 11.8008 12.4972 11.1562 12.4972C10.6289 12.4972 10.2539 12.7198 9.84375 13.0362L7.95703 14.419C7.69922 14.6183 7.53516 14.8409 7.53516 15.169C7.53516 15.5558 7.81641 15.8487 8.20312 15.8487C8.39062 15.8487 8.53125 15.7901 8.68359 15.6847L10.3477 14.4425L10.3594 14.4425L10.3594 23.3722C10.3594 23.9464 10.7109 24.3448 11.2852 24.3448ZM18.7852 24.4386C21.7383 24.4386 22.7461 21.3448 22.7461 18.4034C22.7461 15.462 21.7148 12.3917 18.7852 12.3917C15.8086 12.3917 14.8125 15.4972 14.8125 18.4034C14.8125 21.3683 15.8438 24.4386 18.7852 24.4386ZM18.7852 22.9386C17.3086 22.9386 16.6641 20.8409 16.6641 18.4034C16.6641 15.9894 17.3086 13.9151 18.7852 13.9151C20.25 13.9151 20.8945 16.0011 20.8945 18.4034C20.8945 20.8292 20.2617 22.9386 18.7852 22.9386Z"></path></svg>
+</button>
+<button class="glass play" title="Lecture">
+<svg fill="currentColor" height="20" stroke="none" viewbox="0 0 24 24" width="20"><path d="M7 5.5l11 6.5-11 6.5z"></path></svg>
+</button>
+<button class="glass" title="Avancer 10s">
+<svg fill="currentColor" height="24" viewbox="0 0 30.8789 36.3732" width="20"><g transform="translate(30.8789,0) scale(-1,1)"><path d="M18.0938 0.954194C18.0938 0.00497537 17.4375-0.264556 16.6758 0.274507L11.9414 3.60263C11.2969 4.05966 11.3086 4.70419 11.9414 5.13779L16.6875 8.46591C17.4375 8.99326 18.0938 8.73544 18.0938 7.78623ZM15.2578 33.4386C23.6836 33.4386 30.5273 26.6065 30.5273 18.1808C30.5273 9.75498 23.6953 2.92294 15.2461 2.91123C14.6367 2.92294 14.168 3.41513 14.168 4.00107C14.168 4.59873 14.6484 5.10263 15.2578 5.10263C22.4883 5.10263 28.3359 10.9503 28.3359 18.1808C28.3359 25.4112 22.4883 31.2589 15.2578 31.2589C8.02734 31.2589 2.17969 25.4112 2.17969 18.1808C2.17969 13.6925 4.45312 9.74326 7.875 7.42294C8.40234 7.02451 8.56641 6.41513 8.23828 5.87607C7.93359 5.36044 7.19531 5.2081 6.62109 5.62998C2.625 8.38388 0 12.9425 0 18.1808C0 26.6065 6.83203 33.4386 15.2578 33.4386Z"></path></g><path d="M11.2852 24.3448C11.8594 24.3448 12.1992 23.9464 12.1992 23.3722L12.1992 13.5167C12.1992 12.8722 11.8008 12.4972 11.1562 12.4972C10.6289 12.4972 10.2539 12.7198 9.84375 13.0362L7.95703 14.419C7.69922 14.6183 7.53516 14.8409 7.53516 15.169C7.53516 15.5558 7.81641 15.8487 8.20312 15.8487C8.39062 15.8487 8.53125 15.7901 8.68359 15.6847L10.3477 14.4425L10.3594 14.4425L10.3594 23.3722C10.3594 23.9464 10.7109 24.3448 11.2852 24.3448ZM18.7852 24.4386C21.7383 24.4386 22.7461 21.3448 22.7461 18.4034C22.7461 15.462 21.7148 12.3917 18.7852 12.3917C15.8086 12.3917 14.8125 15.4972 14.8125 18.4034C14.8125 21.3683 15.8438 24.4386 18.7852 24.4386ZM18.7852 22.9386C17.3086 22.9386 16.6641 20.8409 16.6641 18.4034C16.6641 15.9894 17.3086 13.9151 18.7852 13.9151C20.25 13.9151 20.8945 16.0011 20.8945 18.4034C20.8945 20.8292 20.2617 22.9386 18.7852 22.9386Z"></path></svg>
+</button>
+</div>
+</div>
+<label>carte rectangle arrondi (Now Playing)</label>
+</div>
+</div></div></article></section><section class="museum-section" id="video"><div class="museum-section-head"><div><span class="museum-section-index">02</span><h2>Video controls</h2></div><p>Une composition complète pour vérifier la matière, la hiérarchie et la lisibilité sur une scène pleine.</p></div><article class="museum-stage" data-tone="rose"><div class="museum-stage-head"><strong>Playback overlay</strong><span>01 composition</span></div><div class="museum-stage-canvas"><div class="row">
+<div class="col">
+<div class="video-demo">
+<!-- Haut-gauche : fermer + Picture-in-Picture -->
+<div class="vd-tl">
+<button class="glass sm" title="Fermer"><div class="noise"></div><svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24" width="20"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+<button class="glass sm" title="Picture-in-Picture"><div class="noise"></div><svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24" width="20"><rect height="14" rx="2.4" width="17" x="3.5" y="5"></rect><rect fill="currentColor" height="5.5" rx="1.2" stroke="none" width="7" x="11.5" y="11.5"></rect></svg></button>
+</div>
+<!-- Haut-droite : volume -->
+<div class="vd-tr">
+<div class="vd-volume"><div class="noise"></div><div class="track"><i style="width:34%"></i></div><svg fill="currentColor" height="20" style="position:relative;z-index:1;flex:0 0 auto" viewbox="0 0 24 24" width="20"><path d="M4 9.5h3l4-3.5v12l-4-3.5H4z"></path><path d="M14.5 8.5a4.5 4.5 0 010 7M17 6a8 8 0 010 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg></div>
+</div>
+<!-- Centre : -10s / lecture / +10s -->
+<div class="vd-center">
+<button class="glass md" title="Reculer 10 secondes"><div class="noise"></div>
+<svg fill="currentColor" height="28" viewbox="0 0 30.8789 36.3732" width="24"><path d="M18.0938 0.954194C18.0938 0.00497537 17.4375-0.264556 16.6758 0.274507L11.9414 3.60263C11.2969 4.05966 11.3086 4.70419 11.9414 5.13779L16.6875 8.46591C17.4375 8.99326 18.0938 8.73544 18.0938 7.78623ZM15.2578 33.4386C23.6836 33.4386 30.5273 26.6065 30.5273 18.1808C30.5273 9.75498 23.6953 2.92294 15.2461 2.91123C14.6367 2.92294 14.168 3.41513 14.168 4.00107C14.168 4.59873 14.6484 5.10263 15.2578 5.10263C22.4883 5.10263 28.3359 10.9503 28.3359 18.1808C28.3359 25.4112 22.4883 31.2589 15.2578 31.2589C8.02734 31.2589 2.17969 25.4112 2.17969 18.1808C2.17969 13.6925 4.45312 9.74326 7.875 7.42294C8.40234 7.02451 8.56641 6.41513 8.23828 5.87607C7.93359 5.36044 7.19531 5.2081 6.62109 5.62998C2.625 8.38388 0 12.9425 0 18.1808C0 26.6065 6.83203 33.4386 15.2578 33.4386Z"></path><path d="M11.2852 24.3448C11.8594 24.3448 12.1992 23.9464 12.1992 23.3722L12.1992 13.5167C12.1992 12.8722 11.8008 12.4972 11.1562 12.4972C10.6289 12.4972 10.2539 12.7198 9.84375 13.0362L7.95703 14.419C7.69922 14.6183 7.53516 14.8409 7.53516 15.169C7.53516 15.5558 7.81641 15.8487 8.20312 15.8487C8.39062 15.8487 8.53125 15.7901 8.68359 15.6847L10.3477 14.4425L10.3594 14.4425L10.3594 23.3722C10.3594 23.9464 10.7109 24.3448 11.2852 24.3448ZM18.7852 24.4386C21.7383 24.4386 22.7461 21.3448 22.7461 18.4034C22.7461 15.462 21.7148 12.3917 18.7852 12.3917C15.8086 12.3917 14.8125 15.4972 14.8125 18.4034C14.8125 21.3683 15.8438 24.4386 18.7852 24.4386ZM18.7852 22.9386C17.3086 22.9386 16.6641 20.8409 16.6641 18.4034C16.6641 15.9894 17.3086 13.9151 18.7852 13.9151C20.25 13.9151 20.8945 16.0011 20.8945 18.4034C20.8945 20.8292 20.2617 22.9386 18.7852 22.9386Z"></path></svg>
+</button>
+<!-- play.fill : SVG Apple CoreSVG réel fourni par Matthieu (viewBox 24.9141x25.043). -->
+<button class="glass lg" title="Lecture"><div class="noise"></div>
+<svg fill="currentColor" height="34" viewbox="0 0 24.9141 25.043" width="34"><path d="M2.78906 23.0039C2.78906 24.3867 3.59766 25.0312 4.54688 25.0312C4.95703 25.0312 5.39062 24.9023 5.80078 24.668L23.4258 14.3086C24.5156 13.6758 24.9141 13.2305 24.9141 12.5156C24.9141 11.7891 24.5156 11.3438 23.4258 10.7109L5.80078 0.351562C5.39062 0.117188 4.95703 0 4.54688 0C3.59766 0 2.78906 0.632812 2.78906 2.01562Z"></path></svg>
+</button>
+<button class="glass md" title="Avancer 10 secondes"><div class="noise"></div>
+<svg fill="currentColor" height="28" viewbox="0 0 30.8789 36.3732" width="24"><g transform="translate(30.8789,0) scale(-1,1)"><path d="M18.0938 0.954194C18.0938 0.00497537 17.4375-0.264556 16.6758 0.274507L11.9414 3.60263C11.2969 4.05966 11.3086 4.70419 11.9414 5.13779L16.6875 8.46591C17.4375 8.99326 18.0938 8.73544 18.0938 7.78623ZM15.2578 33.4386C23.6836 33.4386 30.5273 26.6065 30.5273 18.1808C30.5273 9.75498 23.6953 2.92294 15.2461 2.91123C14.6367 2.92294 14.168 3.41513 14.168 4.00107C14.168 4.59873 14.6484 5.10263 15.2578 5.10263C22.4883 5.10263 28.3359 10.9503 28.3359 18.1808C28.3359 25.4112 22.4883 31.2589 15.2578 31.2589C8.02734 31.2589 2.17969 25.4112 2.17969 18.1808C2.17969 13.6925 4.45312 9.74326 7.875 7.42294C8.40234 7.02451 8.56641 6.41513 8.23828 5.87607C7.93359 5.36044 7.19531 5.2081 6.62109 5.62998C2.625 8.38388 0 12.9425 0 18.1808C0 26.6065 6.83203 33.4386 15.2578 33.4386Z"></path></g><path d="M11.2852 24.3448C11.8594 24.3448 12.1992 23.9464 12.1992 23.3722L12.1992 13.5167C12.1992 12.8722 11.8008 12.4972 11.1562 12.4972C10.6289 12.4972 10.2539 12.7198 9.84375 13.0362L7.95703 14.419C7.69922 14.6183 7.53516 14.8409 7.53516 15.169C7.53516 15.5558 7.81641 15.8487 8.20312 15.8487C8.39062 15.8487 8.53125 15.7901 8.68359 15.6847L10.3477 14.4425L10.3594 14.4425L10.3594 23.3722C10.3594 23.9464 10.7109 24.3448 11.2852 24.3448ZM18.7852 24.4386C21.7383 24.4386 22.7461 21.3448 22.7461 18.4034C22.7461 15.462 21.7148 12.3917 18.7852 12.3917C15.8086 12.3917 14.8125 15.4972 14.8125 18.4034C14.8125 21.3683 15.8438 24.4386 18.7852 24.4386ZM18.7852 22.9386C17.3086 22.9386 16.6641 20.8409 16.6641 18.4034C16.6641 15.9894 17.3086 13.9151 18.7852 13.9151C20.25 13.9151 20.8945 16.0011 20.8945 18.4034C20.8945 20.8292 20.2617 22.9386 18.7852 22.9386Z"></path></svg>
+</button>
+</div>
+<!-- Bas-droite : vitesse + plein écran, dans UNE capsule -->
+<div class="vd-br">
+<div class="vd-morepill"><div class="noise"></div>
+<button title="Vitesse de lecture"><svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24" width="18"><path d="M4.2 16.5a8 8 0 1115.6 0"></path><path d="M12 14.5l4.2-4.2"></path><circle cx="12" cy="14.6" fill="currentColor" r="1.35" stroke="none"></circle></svg></button>
+<button title="Plein écran"><svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="20"><path d="M15 3h6v6"></path><path d="M21 3l-7 7"></path><path d="M9 21H3v-6"></path><path d="M3 21l7-7"></path></svg></button>
+</div>
+</div>
+<!-- Bas : progression pleine largeur -->
+<div class="vd-bottom">
+<div aria-label="Progression audio : 4 minutes 29 écoulées, 15 minutes 3 restantes" class="progress-pill progress-pill-reference" role="group"><time class="progress-time progress-time-elapsed">04:29</time><div aria-hidden="true" class="progress-rail"><i style="width:23%;"></i></div><time class="progress-time progress-time-remaining">−15:03</time></div>
+</div>
+</div>
+<label>video player (RefPlayer.png : contrôles frosted sur magenta)</label>
+</div>
+</div></div></article></section><section class="museum-section" id="players"><div class="museum-section-head"><div><span class="museum-section-index">03</span><h2>Media players</h2></div><p>Variantes verticales et horizontales, états lecture/pause et versions de composition centrée.</p></div><article class="museum-stage" data-tone="blue"><div class="museum-stage-head"><strong>Vertical player · V1</strong><span>02 states</span></div><div class="museum-stage-canvas"><div class="row">
+<!-- Version 1 : EN LECTURE (bouton pause + égaliseur animé) -->
+<div class="col">
+<div class="mini-cover"></div>
+<div class="mini-player"><div class="noise"></div>
+<svg class="mini-eq" fill="currentColor" height="15" viewbox="0 0 19 15" width="19">
+<rect height="4" rx="1.35" width="2.7" x="0.5" y="5.5"></rect>
+<rect height="12" rx="1.35" width="2.7" x="5.4" y="1.5"></rect>
+<rect height="8" rx="1.35" width="2.7" x="10.3" y="3.5"></rect>
+<rect height="3" rx="1.35" width="2.7" x="15.2" y="6"></rect>
+</svg>
+<div class="mini-title">Sanctuary - Bonzaie Clairing</div>
+<div class="mini-sub">Lorien Testard</div>
+<div class="mini-progress">
+<span>0:33</span>
+<div class="mini-rail"><i></i></div>
+<span>−3:54</span>
+</div>
+<div class="mini-transport">
+<div class="mini-group">
+<!-- backward.fill : miroir horizontal exact du forward.fill Apple réel (même technique que -10s/+10s). -->
+<button title="Précédent"><svg fill="currentColor" height="15" viewbox="0 0 42.9727 22.7695" width="27"><g transform="translate(42.9727,0) scale(-1,1)"><path d="M2.78906 20.8359C2.78906 22.1484 3.5625 22.7461 4.45312 22.7461C4.85156 22.7461 5.25 22.6289 5.64844 22.4062L21.5273 13.0898C22.5234 12.5156 22.9219 12.0703 22.9219 11.3789C22.9219 10.6875 22.5234 10.2305 21.5273 9.65625L5.64844 0.339844C5.25 0.117188 4.85156 0 4.45312 0C3.5625 0 2.78906 0.609375 2.78906 1.92188ZM22.8398 20.8359C22.8398 22.1484 23.6133 22.7461 24.5039 22.7461C24.9023 22.7461 25.3008 22.6289 25.6992 22.4062L41.5664 13.0898C42.5742 12.5156 42.9727 12.0703 42.9727 11.3789C42.9727 10.6875 42.5742 10.2305 41.5664 9.65625L25.6992 0.339844C25.3008 0.117188 24.9023 0 24.5039 0C23.6133 0 22.8398 0.609375 22.8398 1.92188Z"></path></g></svg></button>
+<!-- pause.fill : SVG Apple CoreSVG réel fourni par Matthieu (viewBox 18.15x24.67). -->
+<button class="mini-play" title="Pause"><svg fill="currentColor" height="24" viewbox="0 0 18.1523 24.668" width="18"><path d="M1.875 24.6445L5.25 24.6445C6.50391 24.6445 7.125 24.0234 7.125 22.7695L7.125 1.875C7.125 0.574219 6.50391 0 5.25 0L1.875 0C0.621094 0 0 0.621094 0 1.875L0 22.7695C0 24.0234 0.621094 24.6445 1.875 24.6445ZM12.5508 24.6445L15.9258 24.6445C17.1797 24.6445 17.8008 24.0234 17.8008 22.7695L17.8008 1.875C17.8008 0.574219 17.1797 0 15.9258 0L12.5508 0C11.2969 0 10.6758 0.621094 10.6758 1.875L10.6758 22.7695C10.6758 24.0234 11.2969 24.6445 12.5508 24.6445Z"></path></svg></button>
+<!-- forward.fill : SVG Apple CoreSVG réel fourni par Matthieu (viewBox 42.97x22.77). -->
+<button title="Suivant"><svg fill="currentColor" height="15" viewbox="0 0 42.9727 22.7695" width="27"><path d="M2.78906 20.8359C2.78906 22.1484 3.5625 22.7461 4.45312 22.7461C4.85156 22.7461 5.25 22.6289 5.64844 22.4062L21.5273 13.0898C22.5234 12.5156 22.9219 12.0703 22.9219 11.3789C22.9219 10.6875 22.5234 10.2305 21.5273 9.65625L5.64844 0.339844C5.25 0.117188 4.85156 0 4.45312 0C3.5625 0 2.78906 0.609375 2.78906 1.92188ZM22.8398 20.8359C22.8398 22.1484 23.6133 22.7461 24.5039 22.7461C24.9023 22.7461 25.3008 22.6289 25.6992 22.4062L41.5664 13.0898C42.5742 12.5156 42.9727 12.0703 42.9727 11.3789C42.9727 10.6875 42.5742 10.2305 41.5664 9.65625L25.6992 0.339844C25.3008 0.117188 24.9023 0 24.5039 0C23.6133 0 22.8398 0.609375 22.8398 1.92188Z"></path></svg></button>
+</div>
+<!-- airpods.pro : SVG Apple CoreSVG réel fourni par Matthieu (viewBox 43.66x29.17). -->
+<button class="mini-route" title="Sortie audio (AirPods Pro)"><svg fill="currentColor" height="18" viewbox="0 0 43.6641 29.1692" width="27"><path d="M15.1641 26.4147C15.1641 27.2584 14.625 27.7155 13.7344 27.7155L12.5508 27.7155C11.6602 27.7155 11.1094 27.2584 11.1094 26.4147L11.1094 17.219C12.8282 17.0871 14.0988 16.7973 15.1641 16.3986ZM32.2031 17.219L32.2031 26.4147C32.2031 27.2584 31.6523 27.7155 30.7617 27.7155L29.5781 27.7155C28.6875 27.7155 28.1484 27.2584 28.1484 26.4147L28.1484 16.3986C29.2137 16.7973 30.4843 17.0871 32.2031 17.219Z" fill-opacity="0.85"></path><path d="M20.6016 7.34826C20.6016 10.6295 18.6328 12.9733 16.0898 14.3795C15.009 14.9762 13.8324 15.426 11.9788 15.6531C12.2706 14.959 12.4336 14.1575 12.4336 13.2545C12.4336 10.2512 9.98296 7.24795 6.60139 6.7164C6.88001 6.16174 7.17518 5.70145 7.38281 5.43811C9.22266 2.71936 12.1172 1.41858 14.7188 1.45373C18.0117 1.48889 20.6016 3.66858 20.6016 7.34826ZM35.9297 5.43811C36.1373 5.70145 36.4325 6.16174 36.7111 6.7164C33.3295 7.24795 30.8789 10.2512 30.8789 13.2545C30.8789 14.1575 31.0419 14.959 31.3337 15.6531C29.4801 15.426 28.3035 14.9762 27.2227 14.3795C24.6797 12.9733 22.7109 10.6295 22.7109 7.34826C22.7109 3.66858 25.3008 1.48889 28.5938 1.45373C31.1953 1.41858 34.0898 2.71936 35.9297 5.43811ZM16.6172 4.8053L14.4727 6.60998C14.1797 6.85608 14.1445 7.27795 14.3789 7.5592C14.625 7.86389 15.0586 7.88733 15.3281 7.65295L17.5078 5.84826C17.8008 5.60217 17.8125 5.1803 17.5664 4.89905C17.3438 4.59436 16.9102 4.5592 16.6172 4.8053ZM25.7461 4.89905C25.5 5.1803 25.5117 5.60217 25.8047 5.84826L27.9844 7.65295C28.2539 7.88733 28.6875 7.86389 28.9336 7.5592C29.168 7.27795 29.1328 6.85608 28.8398 6.60998L26.6953 4.8053C26.4023 4.5592 25.9688 4.59436 25.7461 4.89905Z" fill-opacity="0.85"></path><path d="M6.76172 17.5084C9.09375 17.5084 11.0391 16.0553 11.0391 13.2545C11.0391 10.6764 8.64844 8.02795 5.51953 8.02795C2.94141 8.02795 1.39453 10.0436 1.39453 12.2233C1.39453 15.3639 4.06641 17.5084 6.76172 17.5084ZM6.04688 15.3405C5.625 15.7037 4.91016 15.3287 4.04297 14.274C3.1875 13.2428 2.95312 12.5045 3.36328 12.1412C3.79688 11.778 4.5 12.1412 5.36719 13.1959C6.21094 14.2623 6.45703 14.9889 6.04688 15.3405ZM36.5508 17.5084C39.2461 17.5084 41.918 15.3639 41.918 12.2233C41.918 10.0436 40.3711 8.02795 37.793 8.02795C34.6641 8.02795 32.2734 10.6764 32.2734 13.2545C32.2734 16.0553 34.2188 17.5084 36.5508 17.5084ZM37.2656 15.3405C36.8555 14.9889 37.1016 14.2623 37.9453 13.1959C38.8125 12.1412 39.5156 11.778 39.9492 12.1412C40.3594 12.5045 40.125 13.2428 39.2695 14.274C38.4141 15.3287 37.6875 15.7037 37.2656 15.3405Z" fill-opacity="0.425"></path></svg></button>
+</div>
+</div>
+<label>mini-player — en lecture (pause + égaliseur)</label>
+</div>
+<!-- Version 2 : EN PAUSE (bouton play.fill Apple réel, égaliseur figé) -->
+<div class="col">
+<div class="mini-cover"></div>
+<div class="mini-player"><div class="noise"></div>
+<svg class="mini-eq mini-eq-static" fill="currentColor" height="15" viewbox="0 0 19 15" width="19">
+<rect height="4" rx="1.35" width="2.7" x="0.5" y="5.5"></rect>
+<rect height="7" rx="1.35" width="2.7" x="5.4" y="4"></rect>
+<rect height="5" rx="1.35" width="2.7" x="10.3" y="5"></rect>
+<rect height="3" rx="1.35" width="2.7" x="15.2" y="6"></rect>
+</svg>
+<div class="mini-title">Sanctuary - Bonzaie Clairing</div>
+<div class="mini-sub">Lorien Testard</div>
+<div class="mini-progress">
+<span>0:33</span>
+<div class="mini-rail"><i></i></div>
+<span>−3:54</span>
+</div>
+<div class="mini-transport">
+<div class="mini-group">
+<button title="Précédent"><svg fill="currentColor" height="15" viewbox="0 0 42.9727 22.7695" width="27"><g transform="translate(42.9727,0) scale(-1,1)"><path d="M2.78906 20.8359C2.78906 22.1484 3.5625 22.7461 4.45312 22.7461C4.85156 22.7461 5.25 22.6289 5.64844 22.4062L21.5273 13.0898C22.5234 12.5156 22.9219 12.0703 22.9219 11.3789C22.9219 10.6875 22.5234 10.2305 21.5273 9.65625L5.64844 0.339844C5.25 0.117188 4.85156 0 4.45312 0C3.5625 0 2.78906 0.609375 2.78906 1.92188ZM22.8398 20.8359C22.8398 22.1484 23.6133 22.7461 24.5039 22.7461C24.9023 22.7461 25.3008 22.6289 25.6992 22.4062L41.5664 13.0898C42.5742 12.5156 42.9727 12.0703 42.9727 11.3789C42.9727 10.6875 42.5742 10.2305 41.5664 9.65625L25.6992 0.339844C25.3008 0.117188 24.9023 0 24.5039 0C23.6133 0 22.8398 0.609375 22.8398 1.92188Z"></path></g></svg></button>
+<!-- play.fill : SVG Apple CoreSVG réel (viewBox 24.9141x25.043) -->
+<button class="mini-play" title="Lecture"><svg fill="currentColor" height="27" style="margin-left:3px" viewbox="0 0 24.9141 25.043" width="27"><path d="M2.78906 23.0039C2.78906 24.3867 3.59766 25.0312 4.54688 25.0312C4.95703 25.0312 5.39062 24.9023 5.80078 24.668L23.4258 14.3086C24.5156 13.6758 24.9141 13.2305 24.9141 12.5156C24.9141 11.7891 24.5156 11.3438 23.4258 10.7109L5.80078 0.351562C5.39062 0.117188 4.95703 0 4.54688 0C3.59766 0 2.78906 0.632812 2.78906 2.01562Z"></path></svg></button>
+<button title="Suivant"><svg fill="currentColor" height="15" viewbox="0 0 42.9727 22.7695" width="27"><path d="M2.78906 20.8359C2.78906 22.1484 3.5625 22.7461 4.45312 22.7461C4.85156 22.7461 5.25 22.6289 5.64844 22.4062L21.5273 13.0898C22.5234 12.5156 22.9219 12.0703 22.9219 11.3789C22.9219 10.6875 22.5234 10.2305 21.5273 9.65625L5.64844 0.339844C5.25 0.117188 4.85156 0 4.45312 0C3.5625 0 2.78906 0.609375 2.78906 1.92188ZM22.8398 20.8359C22.8398 22.1484 23.6133 22.7461 24.5039 22.7461C24.9023 22.7461 25.3008 22.6289 25.6992 22.4062L41.5664 13.0898C42.5742 12.5156 42.9727 12.0703 42.9727 11.3789C42.9727 10.6875 42.5742 10.2305 41.5664 9.65625L25.6992 0.339844C25.3008 0.117188 24.9023 0 24.5039 0C23.6133 0 22.8398 0.609375 22.8398 1.92188Z"></path></svg></button>
+</div>
+<button class="mini-route" title="Sortie audio (AirPods Pro)"><svg fill="currentColor" height="18" viewbox="0 0 43.6641 29.1692" width="27"><path d="M15.1641 26.4147C15.1641 27.2584 14.625 27.7155 13.7344 27.7155L12.5508 27.7155C11.6602 27.7155 11.1094 27.2584 11.1094 26.4147L11.1094 17.219C12.8282 17.0871 14.0988 16.7973 15.1641 16.3986ZM32.2031 17.219L32.2031 26.4147C32.2031 27.2584 31.6523 27.7155 30.7617 27.7155L29.5781 27.7155C28.6875 27.7155 28.1484 27.2584 28.1484 26.4147L28.1484 16.3986C29.2137 16.7973 30.4843 17.0871 32.2031 17.219Z" fill-opacity="0.85"></path><path d="M20.6016 7.34826C20.6016 10.6295 18.6328 12.9733 16.0898 14.3795C15.009 14.9762 13.8324 15.426 11.9788 15.6531C12.2706 14.959 12.4336 14.1575 12.4336 13.2545C12.4336 10.2512 9.98296 7.24795 6.60139 6.7164C6.88001 6.16174 7.17518 5.70145 7.38281 5.43811C9.22266 2.71936 12.1172 1.41858 14.7188 1.45373C18.0117 1.48889 20.6016 3.66858 20.6016 7.34826ZM35.9297 5.43811C36.1373 5.70145 36.4325 6.16174 36.7111 6.7164C33.3295 7.24795 30.8789 10.2512 30.8789 13.2545C30.8789 14.1575 31.0419 14.959 31.3337 15.6531C29.4801 15.426 28.3035 14.9762 27.2227 14.3795C24.6797 12.9733 22.7109 10.6295 22.7109 7.34826C22.7109 3.66858 25.3008 1.48889 28.5938 1.45373C31.1953 1.41858 34.0898 2.71936 35.9297 5.43811ZM16.6172 4.8053L14.4727 6.60998C14.1797 6.85608 14.1445 7.27795 14.3789 7.5592C14.625 7.86389 15.0586 7.88733 15.3281 7.65295L17.5078 5.84826C17.8008 5.60217 17.8125 5.1803 17.5664 4.89905C17.3438 4.59436 16.9102 4.5592 16.6172 4.8053ZM25.7461 4.89905C25.5 5.1803 25.5117 5.60217 25.8047 5.84826L27.9844 7.65295C28.2539 7.88733 28.6875 7.86389 28.9336 7.5592C29.168 7.27795 29.1328 6.85608 28.8398 6.60998L26.6953 4.8053C26.4023 4.5592 25.9688 4.59436 25.7461 4.89905Z" fill-opacity="0.85"></path><path d="M6.76172 17.5084C9.09375 17.5084 11.0391 16.0553 11.0391 13.2545C11.0391 10.6764 8.64844 8.02795 5.51953 8.02795C2.94141 8.02795 1.39453 10.0436 1.39453 12.2233C1.39453 15.3639 4.06641 17.5084 6.76172 17.5084ZM6.04688 15.3405C5.625 15.7037 4.91016 15.3287 4.04297 14.274C3.1875 13.2428 2.95312 12.5045 3.36328 12.1412C3.79688 11.778 4.5 12.1412 5.36719 13.1959C6.21094 14.2623 6.45703 14.9889 6.04688 15.3405ZM36.5508 17.5084C39.2461 17.5084 41.918 15.3639 41.918 12.2233C41.918 10.0436 40.3711 8.02795 37.793 8.02795C34.6641 8.02795 32.2734 10.6764 32.2734 13.2545C32.2734 16.0553 34.2188 17.5084 36.5508 17.5084ZM37.2656 15.3405C36.8555 14.9889 37.1016 14.2623 37.9453 13.1959C38.8125 12.1412 39.5156 11.778 39.9492 12.1412C40.3594 12.5045 40.125 13.2428 39.2695 14.274C38.4141 15.3287 37.6875 15.7037 37.2656 15.3405Z" fill-opacity="0.425"></path></svg></button>
+</div>
+</div>
+<label>mini-player — en pause (play.fill Apple réel)</label>
+</div>
+</div></div></article><article class="museum-stage" data-tone="neutral"><div class="museum-stage-head"><strong>Horizontal player · V1</strong><span>02 states</span></div><div class="museum-stage-canvas"><div class="row" style="flex-direction:column; align-items:stretch;">
+<!-- Variante EN LECTURE : pause + égaliseur animé -->
+<div class="col" style="align-items:stretch;">
+<div class="mini-h"><div class="noise"></div>
+<div class="mini-h-now">
+<div class="mini-h-cover"></div>
+<div class="mini-h-meta">
+<div class="mini-h-title">
+<span>Sanctuary - Bonzaie Clairing</span>
+<svg class="mini-h-eq" fill="currentColor" height="13" viewbox="0 0 19 15" width="16">
+<rect height="4" rx="1.35" width="2.7" x="0.5" y="5.5"></rect><rect height="12" rx="1.35" width="2.7" x="5.4" y="1.5"></rect>
+<rect height="8" rx="1.35" width="2.7" x="10.3" y="3.5"></rect><rect height="3" rx="1.35" width="2.7" x="15.2" y="6"></rect>
+</svg>
+</div>
+<div class="mini-h-sub">Lorien Testard</div>
+</div>
+</div>
+<div class="mini-h-center">
+<div class="mini-h-transport">
+<button title="Précédent"><svg fill="currentColor" height="14" viewbox="0 0 42.9727 22.7695" width="24"><g transform="translate(42.9727,0) scale(-1,1)"><path d="M2.78906 20.8359C2.78906 22.1484 3.5625 22.7461 4.45312 22.7461C4.85156 22.7461 5.25 22.6289 5.64844 22.4062L21.5273 13.0898C22.5234 12.5156 22.9219 12.0703 22.9219 11.3789C22.9219 10.6875 22.5234 10.2305 21.5273 9.65625L5.64844 0.339844C5.25 0.117188 4.85156 0 4.45312 0C3.5625 0 2.78906 0.609375 2.78906 1.92188ZM22.8398 20.8359C22.8398 22.1484 23.6133 22.7461 24.5039 22.7461C24.9023 22.7461 25.3008 22.6289 25.6992 22.4062L41.5664 13.0898C42.5742 12.5156 42.9727 12.0703 42.9727 11.3789C42.9727 10.6875 42.5742 10.2305 41.5664 9.65625L25.6992 0.339844C25.3008 0.117188 24.9023 0 24.5039 0C23.6133 0 22.8398 0.609375 22.8398 1.92188Z"></path></g></svg></button>
+<button title="Pause"><svg fill="currentColor" height="21" viewbox="0 0 18.1523 24.668" width="16"><path d="M1.875 24.6445L5.25 24.6445C6.50391 24.6445 7.125 24.0234 7.125 22.7695L7.125 1.875C7.125 0.574219 6.50391 0 5.25 0L1.875 0C0.621094 0 0 0.621094 0 1.875L0 22.7695C0 24.0234 0.621094 24.6445 1.875 24.6445ZM12.5508 24.6445L15.9258 24.6445C17.1797 24.6445 17.8008 24.0234 17.8008 22.7695L17.8008 1.875C17.8008 0.574219 17.1797 0 15.9258 0L12.5508 0C11.2969 0 10.6758 0.621094 10.6758 1.875L10.6758 22.7695C10.6758 24.0234 11.2969 24.6445 12.5508 24.6445Z"></path></svg></button>
+<button title="Suivant"><svg fill="currentColor" height="14" viewbox="0 0 42.9727 22.7695" width="24"><path d="M2.78906 20.8359C2.78906 22.1484 3.5625 22.7461 4.45312 22.7461C4.85156 22.7461 5.25 22.6289 5.64844 22.4062L21.5273 13.0898C22.5234 12.5156 22.9219 12.0703 22.9219 11.3789C22.9219 10.6875 22.5234 10.2305 21.5273 9.65625L5.64844 0.339844C5.25 0.117188 4.85156 0 4.45312 0C3.5625 0 2.78906 0.609375 2.78906 1.92188ZM22.8398 20.8359C22.8398 22.1484 23.6133 22.7461 24.5039 22.7461C24.9023 22.7461 25.3008 22.6289 25.6992 22.4062L41.5664 13.0898C42.5742 12.5156 42.9727 12.0703 42.9727 11.3789C42.9727 10.6875 42.5742 10.2305 41.5664 9.65625L25.6992 0.339844C25.3008 0.117188 24.9023 0 24.5039 0C23.6133 0 22.8398 0.609375 22.8398 1.92188Z"></path></svg></button>
+</div>
+<div class="mini-h-progress"><span>0:33</span><div class="mini-h-rail"><i></i></div><span>−3:54</span></div>
+</div>
+<div class="mini-h-tools">
+<button title="Sortie audio (AirPods Pro)"><svg fill="currentColor" height="17" viewbox="0 0 43.6641 29.1692" width="25"><path d="M15.1641 26.4147C15.1641 27.2584 14.625 27.7155 13.7344 27.7155L12.5508 27.7155C11.6602 27.7155 11.1094 27.2584 11.1094 26.4147L11.1094 17.219C12.8282 17.0871 14.0988 16.7973 15.1641 16.3986ZM32.2031 17.219L32.2031 26.4147C32.2031 27.2584 31.6523 27.7155 30.7617 27.7155L29.5781 27.7155C28.6875 27.7155 28.1484 27.2584 28.1484 26.4147L28.1484 16.3986C29.2137 16.7973 30.4843 17.0871 32.2031 17.219Z" fill-opacity="0.85"></path><path d="M20.6016 7.34826C20.6016 10.6295 18.6328 12.9733 16.0898 14.3795C15.009 14.9762 13.8324 15.426 11.9788 15.6531C12.2706 14.959 12.4336 14.1575 12.4336 13.2545C12.4336 10.2512 9.98296 7.24795 6.60139 6.7164C6.88001 6.16174 7.17518 5.70145 7.38281 5.43811C9.22266 2.71936 12.1172 1.41858 14.7188 1.45373C18.0117 1.48889 20.6016 3.66858 20.6016 7.34826ZM35.9297 5.43811C36.1373 5.70145 36.4325 6.16174 36.7111 6.7164C33.3295 7.24795 30.8789 10.2512 30.8789 13.2545C30.8789 14.1575 31.0419 14.959 31.3337 15.6531C29.4801 15.426 28.3035 14.9762 27.2227 14.3795C24.6797 12.9733 22.7109 10.6295 22.7109 7.34826C22.7109 3.66858 25.3008 1.48889 28.5938 1.45373C31.1953 1.41858 34.0898 2.71936 35.9297 5.43811ZM16.6172 4.8053L14.4727 6.60998C14.1797 6.85608 14.1445 7.27795 14.3789 7.5592C14.625 7.86389 15.0586 7.88733 15.3281 7.65295L17.5078 5.84826C17.8008 5.60217 17.8125 5.1803 17.5664 4.89905C17.3438 4.59436 16.9102 4.5592 16.6172 4.8053ZM25.7461 4.89905C25.5 5.1803 25.5117 5.60217 25.8047 5.84826L27.9844 7.65295C28.2539 7.88733 28.6875 7.86389 28.9336 7.5592C29.168 7.27795 29.1328 6.85608 28.8398 6.60998L26.6953 4.8053C26.4023 4.5592 25.9688 4.59436 25.7461 4.89905Z" fill-opacity="0.85"></path><path d="M6.76172 17.5084C9.09375 17.5084 11.0391 16.0553 11.0391 13.2545C11.0391 10.6764 8.64844 8.02795 5.51953 8.02795C2.94141 8.02795 1.39453 10.0436 1.39453 12.2233C1.39453 15.3639 4.06641 17.5084 6.76172 17.5084ZM6.04688 15.3405C5.625 15.7037 4.91016 15.3287 4.04297 14.274C3.1875 13.2428 2.95312 12.5045 3.36328 12.1412C3.79688 11.778 4.5 12.1412 5.36719 13.1959C6.21094 14.2623 6.45703 14.9889 6.04688 15.3405ZM36.5508 17.5084C39.2461 17.5084 41.918 15.3639 41.918 12.2233C41.918 10.0436 40.3711 8.02795 37.793 8.02795C34.6641 8.02795 32.2734 10.6764 32.2734 13.2545C32.2734 16.0553 34.2188 17.5084 36.5508 17.5084ZM37.2656 15.3405C36.8555 14.9889 37.1016 14.2623 37.9453 13.1959C38.8125 12.1412 39.5156 11.778 39.9492 12.1412C40.3594 12.5045 40.125 13.2428 39.2695 14.274C38.4141 15.3287 37.6875 15.7037 37.2656 15.3405Z" fill-opacity="0.425"></path></svg></button>
+<button title="Volume"><svg fill="currentColor" height="20" viewbox="0 0 24 24" width="20"><path d="M4 9.5h3l4-3.5v12l-4-3.5H4z"></path><path d="M14.5 8.5a4.5 4.5 0 010 7M17 6a8 8 0 010 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg></button>
+</div>
+</div>
+<label>mini-player horizontal — en lecture (pause + égaliseur animé)</label>
+</div>
+<!-- Variante EN PAUSE : play.fill Apple réel + égaliseur figé -->
+<div class="col" style="align-items:stretch; margin-top:10px;">
+<div class="mini-h"><div class="noise"></div>
+<div class="mini-h-now">
+<div class="mini-h-cover"></div>
+<div class="mini-h-meta">
+<div class="mini-h-title">
+<span>Sanctuary - Bonzaie Clairing</span>
+<svg class="mini-h-eq mini-eq-static" fill="currentColor" height="13" viewbox="0 0 19 15" width="16">
+<rect height="4" rx="1.35" width="2.7" x="0.5" y="5.5"></rect><rect height="7" rx="1.35" width="2.7" x="5.4" y="4"></rect>
+<rect height="5" rx="1.35" width="2.7" x="10.3" y="5"></rect><rect height="3" rx="1.35" width="2.7" x="15.2" y="6"></rect>
+</svg>
+</div>
+<div class="mini-h-sub">Lorien Testard</div>
+</div>
+</div>
+<div class="mini-h-center">
+<div class="mini-h-transport">
+<button title="Précédent"><svg fill="currentColor" height="14" viewbox="0 0 42.9727 22.7695" width="24"><g transform="translate(42.9727,0) scale(-1,1)"><path d="M2.78906 20.8359C2.78906 22.1484 3.5625 22.7461 4.45312 22.7461C4.85156 22.7461 5.25 22.6289 5.64844 22.4062L21.5273 13.0898C22.5234 12.5156 22.9219 12.0703 22.9219 11.3789C22.9219 10.6875 22.5234 10.2305 21.5273 9.65625L5.64844 0.339844C5.25 0.117188 4.85156 0 4.45312 0C3.5625 0 2.78906 0.609375 2.78906 1.92188ZM22.8398 20.8359C22.8398 22.1484 23.6133 22.7461 24.5039 22.7461C24.9023 22.7461 25.3008 22.6289 25.6992 22.4062L41.5664 13.0898C42.5742 12.5156 42.9727 12.0703 42.9727 11.3789C42.9727 10.6875 42.5742 10.2305 41.5664 9.65625L25.6992 0.339844C25.3008 0.117188 24.9023 0 24.5039 0C23.6133 0 22.8398 0.609375 22.8398 1.92188Z"></path></g></svg></button>
+<button title="Lecture"><svg fill="currentColor" height="20" style="margin-left:2px" viewbox="0 0 24.9141 25.043" width="20"><path d="M2.78906 23.0039C2.78906 24.3867 3.59766 25.0312 4.54688 25.0312C4.95703 25.0312 5.39062 24.9023 5.80078 24.668L23.4258 14.3086C24.5156 13.6758 24.9141 13.2305 24.9141 12.5156C24.9141 11.7891 24.5156 11.3438 23.4258 10.7109L5.80078 0.351562C5.39062 0.117188 4.95703 0 4.54688 0C3.59766 0 2.78906 0.632812 2.78906 2.01562Z"></path></svg></button>
+<button title="Suivant"><svg fill="currentColor" height="14" viewbox="0 0 42.9727 22.7695" width="24"><path d="M2.78906 20.8359C2.78906 22.1484 3.5625 22.7461 4.45312 22.7461C4.85156 22.7461 5.25 22.6289 5.64844 22.4062L21.5273 13.0898C22.5234 12.5156 22.9219 12.0703 22.9219 11.3789C22.9219 10.6875 22.5234 10.2305 21.5273 9.65625L5.64844 0.339844C5.25 0.117188 4.85156 0 4.45312 0C3.5625 0 2.78906 0.609375 2.78906 1.92188ZM22.8398 20.8359C22.8398 22.1484 23.6133 22.7461 24.5039 22.7461C24.9023 22.7461 25.3008 22.6289 25.6992 22.4062L41.5664 13.0898C42.5742 12.5156 42.9727 12.0703 42.9727 11.3789C42.9727 10.6875 42.5742 10.2305 41.5664 9.65625L25.6992 0.339844C25.3008 0.117188 24.9023 0 24.5039 0C23.6133 0 22.8398 0.609375 22.8398 1.92188Z"></path></svg></button>
+</div>
+<div class="mini-h-progress"><span>0:33</span><div class="mini-h-rail"><i></i></div><span>−3:54</span></div>
+</div>
+<div class="mini-h-tools">
+<button title="Sortie audio (AirPods Pro)"><svg fill="currentColor" height="17" viewbox="0 0 43.6641 29.1692" width="25"><path d="M15.1641 26.4147C15.1641 27.2584 14.625 27.7155 13.7344 27.7155L12.5508 27.7155C11.6602 27.7155 11.1094 27.2584 11.1094 26.4147L11.1094 17.219C12.8282 17.0871 14.0988 16.7973 15.1641 16.3986ZM32.2031 17.219L32.2031 26.4147C32.2031 27.2584 31.6523 27.7155 30.7617 27.7155L29.5781 27.7155C28.6875 27.7155 28.1484 27.2584 28.1484 26.4147L28.1484 16.3986C29.2137 16.7973 30.4843 17.0871 32.2031 17.219Z" fill-opacity="0.85"></path><path d="M20.6016 7.34826C20.6016 10.6295 18.6328 12.9733 16.0898 14.3795C15.009 14.9762 13.8324 15.426 11.9788 15.6531C12.2706 14.959 12.4336 14.1575 12.4336 13.2545C12.4336 10.2512 9.98296 7.24795 6.60139 6.7164C6.88001 6.16174 7.17518 5.70145 7.38281 5.43811C9.22266 2.71936 12.1172 1.41858 14.7188 1.45373C18.0117 1.48889 20.6016 3.66858 20.6016 7.34826ZM35.9297 5.43811C36.1373 5.70145 36.4325 6.16174 36.7111 6.7164C33.3295 7.24795 30.8789 10.2512 30.8789 13.2545C30.8789 14.1575 31.0419 14.959 31.3337 15.6531C29.4801 15.426 28.3035 14.9762 27.2227 14.3795C24.6797 12.9733 22.7109 10.6295 22.7109 7.34826C22.7109 3.66858 25.3008 1.48889 28.5938 1.45373C31.1953 1.41858 34.0898 2.71936 35.9297 5.43811ZM16.6172 4.8053L14.4727 6.60998C14.1797 6.85608 14.1445 7.27795 14.3789 7.5592C14.625 7.86389 15.0586 7.88733 15.3281 7.65295L17.5078 5.84826C17.8008 5.60217 17.8125 5.1803 17.5664 4.89905C17.3438 4.59436 16.9102 4.5592 16.6172 4.8053ZM25.7461 4.89905C25.5 5.1803 25.5117 5.60217 25.8047 5.84826L27.9844 7.65295C28.2539 7.88733 28.6875 7.86389 28.9336 7.5592C29.168 7.27795 29.1328 6.85608 28.8398 6.60998L26.6953 4.8053C26.4023 4.5592 25.9688 4.59436 25.7461 4.89905Z" fill-opacity="0.85"></path><path d="M6.76172 17.5084C9.09375 17.5084 11.0391 16.0553 11.0391 13.2545C11.0391 10.6764 8.64844 8.02795 5.51953 8.02795C2.94141 8.02795 1.39453 10.0436 1.39453 12.2233C1.39453 15.3639 4.06641 17.5084 6.76172 17.5084ZM6.04688 15.3405C5.625 15.7037 4.91016 15.3287 4.04297 14.274C3.1875 13.2428 2.95312 12.5045 3.36328 12.1412C3.79688 11.778 4.5 12.1412 5.36719 13.1959C6.21094 14.2623 6.45703 14.9889 6.04688 15.3405ZM36.5508 17.5084C39.2461 17.5084 41.918 15.3639 41.918 12.2233C41.918 10.0436 40.3711 8.02795 37.793 8.02795C34.6641 8.02795 32.2734 10.6764 32.2734 13.2545C32.2734 16.0553 34.2188 17.5084 36.5508 17.5084ZM37.2656 15.3405C36.8555 14.9889 37.1016 14.2623 37.9453 13.1959C38.8125 12.1412 39.5156 11.778 39.9492 12.1412C40.3594 12.5045 40.125 13.2428 39.2695 14.274C38.4141 15.3287 37.6875 15.7037 37.2656 15.3405Z" fill-opacity="0.425"></path></svg></button>
+<button title="Volume"><svg fill="currentColor" height="20" viewbox="0 0 24 24" width="20"><path d="M4 9.5h3l4-3.5v12l-4-3.5H4z"></path><path d="M14.5 8.5a4.5 4.5 0 010 7M17 6a8 8 0 010 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg></button>
+</div>
+</div>
+<label>mini-player horizontal — en pause (play.fill Apple réel + égaliseur figé)</label>
+</div>
+</div></div></article><article class="museum-stage" data-tone="rose"><div class="museum-stage-head"><strong>Horizontal player · V2</strong><span>01 composition</span></div><div class="museum-stage-canvas"><div class="row" style="flex-direction:column; align-items:stretch;">
+<div class="col" style="align-items:stretch;">
+<div class="mini-h2"><div class="noise"></div>
+<div class="mini-h2-now">
+<div class="mini-h-cover"></div>
+<div class="mini-h-meta">
+<div class="mini-h-title">
+<span>Sanctuary - Bonzaie Clairing</span>
+<svg class="mini-h-eq" fill="currentColor" height="13" viewbox="0 0 19 15" width="16">
+<rect height="4" rx="1.35" width="2.7" x="0.5" y="5.5"></rect><rect height="12" rx="1.35" width="2.7" x="5.4" y="1.5"></rect>
+<rect height="8" rx="1.35" width="2.7" x="10.3" y="3.5"></rect><rect height="3" rx="1.35" width="2.7" x="15.2" y="6"></rect>
+</svg>
+</div>
+<div class="mini-h-sub">Lorien Testard</div>
+</div>
+</div>
+<!-- Centre ABSOLU (indépendant des largeurs gauche/droite) : shuffle · prev · pause · next · repeat,
+           puis la progression, tous les deux parfaitement centrés sur la carte entière. -->
+<div class="mini-h2-center">
+<div class="mini-h2-transport">
+<button class="is-on" title="Lecture aléatoire (actif)"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="16"><path d="M4 7h3.3c1.4 0 2.2.6 3 1.8M4 17h3.3c1.4 0 2.2-.6 3-1.8M14.7 8.8c.8-1.2 1.6-1.8 3-1.8H19M12.7 13.4c.5.8 1 1.4 1.6 1.8.8.5 1.5.8 2.7.8H19M16.5 5.5 19.5 7l-3 1.5M16.5 18.5 19.5 17l-3-1.5"></path></svg></button>
+<button title="Précédent"><svg fill="currentColor" height="12" viewbox="0 0 42.9727 22.7695" width="20"><g transform="translate(42.9727,0) scale(-1,1)"><path d="M2.78906 20.8359C2.78906 22.1484 3.5625 22.7461 4.45312 22.7461C4.85156 22.7461 5.25 22.6289 5.64844 22.4062L21.5273 13.0898C22.5234 12.5156 22.9219 12.0703 22.9219 11.3789C22.9219 10.6875 22.5234 10.2305 21.5273 9.65625L5.64844 0.339844C5.25 0.117188 4.85156 0 4.45312 0C3.5625 0 2.78906 0.609375 2.78906 1.92188ZM22.8398 20.8359C22.8398 22.1484 23.6133 22.7461 24.5039 22.7461C24.9023 22.7461 25.3008 22.6289 25.6992 22.4062L41.5664 13.0898C42.5742 12.5156 42.9727 12.0703 42.9727 11.3789C42.9727 10.6875 42.5742 10.2305 41.5664 9.65625L25.6992 0.339844C25.3008 0.117188 24.9023 0 24.5039 0C23.6133 0 22.8398 0.609375 22.8398 1.92188Z"></path></g></svg></button>
+<button title="Pause"><svg fill="currentColor" height="20" viewbox="0 0 18.1523 24.668" width="15"><path d="M1.875 24.6445L5.25 24.6445C6.50391 24.6445 7.125 24.0234 7.125 22.7695L7.125 1.875C7.125 0.574219 6.50391 0 5.25 0L1.875 0C0.621094 0 0 0.621094 0 1.875L0 22.7695C0 24.0234 0.621094 24.6445 1.875 24.6445ZM12.5508 24.6445L15.9258 24.6445C17.1797 24.6445 17.8008 24.0234 17.8008 22.7695L17.8008 1.875C17.8008 0.574219 17.1797 0 15.9258 0L12.5508 0C11.2969 0 10.6758 0.621094 10.6758 1.875L10.6758 22.7695C10.6758 24.0234 11.2969 24.6445 12.5508 24.6445Z"></path></svg></button>
+<button title="Suivant"><svg fill="currentColor" height="12" viewbox="0 0 42.9727 22.7695" width="20"><path d="M2.78906 20.8359C2.78906 22.1484 3.5625 22.7461 4.45312 22.7461C4.85156 22.7461 5.25 22.6289 5.64844 22.4062L21.5273 13.0898C22.5234 12.5156 22.9219 12.0703 22.9219 11.3789C22.9219 10.6875 22.5234 10.2305 21.5273 9.65625L5.64844 0.339844C5.25 0.117188 4.85156 0 4.45312 0C3.5625 0 2.78906 0.609375 2.78906 1.92188ZM22.8398 20.8359C22.8398 22.1484 23.6133 22.7461 24.5039 22.7461C24.9023 22.7461 25.3008 22.6289 25.6992 22.4062L41.5664 13.0898C42.5742 12.5156 42.9727 12.0703 42.9727 11.3789C42.9727 10.6875 42.5742 10.2305 41.5664 9.65625L25.6992 0.339844C25.3008 0.117188 24.9023 0 24.5039 0C23.6133 0 22.8398 0.609375 22.8398 1.92188Z"></path></svg></button>
+<button title="Répéter"><svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="16"><path d="M6 7h9a3 3 0 013 3v1"></path><path d="M8.2 4 5.5 7 8.2 10"></path><path d="M18 17H9a3 3 0 01-3-3v-1"></path><path d="M15.8 20l2.7-3-2.7-3"></path></svg></button>
+</div>
+<div class="mini-h2-progress"><span>0:33</span><div class="mini-h2-rail"><i></i></div><span>−3:54</span></div>
+</div>
+<!-- Droite : file d'attente · volume (slider réel) · bascule vue verticale. AirPods retiré. -->
+<div class="mini-h2-tools">
+<button title="File d’attente"><svg fill="none" height="17" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24" width="17"><path d="M8 6h12M8 12h12M8 18h12"></path><circle cx="4" cy="6" fill="currentColor" r="1.1" stroke="none"></circle><circle cx="4" cy="12" fill="currentColor" r="1.1" stroke="none"></circle><circle cx="4" cy="18" fill="currentColor" r="1.1" stroke="none"></circle></svg></button>
+<div class="mini-h2-volume">
+<svg fill="currentColor" height="16" viewbox="0 0 24 24" width="16"><path d="M4 9.5h3l4-3.5v12l-4-3.5H4z"></path><path d="M14.5 8.5a4.5 4.5 0 010 7M17 6a8 8 0 010 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>
+<div class="mini-h2-volume-track"><i></i></div>
+</div>
+<button title="Basculer en vue verticale"><svg fill="none" height="17" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24" width="17"><rect height="7" rx="1.8" width="16" x="4" y="4"></rect><rect height="7" rx="1.8" width="16" x="4" y="13"></rect></svg></button>
+</div>
+</div>
+<label>V2 horizontal — centré réellement, queue + volume slider + toggle vertical, sans AirPods</label>
+</div>
+</div></div></article><article class="museum-stage" data-tone="blue"><div class="museum-stage-head"><strong>Vertical player · V2</strong><span>02 states</span></div><div class="museum-stage-canvas"><div class="row">
+<div class="col">
+<div class="mini-cover"></div>
+<div class="mini-player-v2"><div class="noise"></div>
+<svg class="mini-eq" fill="currentColor" height="15" viewbox="0 0 19 15" width="19">
+<rect height="4" rx="1.35" width="2.7" x="0.5" y="5.5"></rect>
+<rect height="12" rx="1.35" width="2.7" x="5.4" y="1.5"></rect>
+<rect height="8" rx="1.35" width="2.7" x="10.3" y="3.5"></rect>
+<rect height="3" rx="1.35" width="2.7" x="15.2" y="6"></rect>
+</svg>
+<div class="mini-title">Sanctuary - Bonzaie Clairing</div>
+<div class="mini-sub">Lorien Testard</div>
+<div class="mini-progress">
+<span>0:33</span>
+<div class="mini-rail"><i></i></div>
+<span>−3:54</span>
+</div>
+<div class="mini-transport">
+<div class="mini-group">
+<button title="Précédent"><svg fill="currentColor" height="15" viewbox="0 0 42.9727 22.7695" width="27"><g transform="translate(42.9727,0) scale(-1,1)"><path d="M2.78906 20.8359C2.78906 22.1484 3.5625 22.7461 4.45312 22.7461C4.85156 22.7461 5.25 22.6289 5.64844 22.4062L21.5273 13.0898C22.5234 12.5156 22.9219 12.0703 22.9219 11.3789C22.9219 10.6875 22.5234 10.2305 21.5273 9.65625L5.64844 0.339844C5.25 0.117188 4.85156 0 4.45312 0C3.5625 0 2.78906 0.609375 2.78906 1.92188ZM22.8398 20.8359C22.8398 22.1484 23.6133 22.7461 24.5039 22.7461C24.9023 22.7461 25.3008 22.6289 25.6992 22.4062L41.5664 13.0898C42.5742 12.5156 42.9727 12.0703 42.9727 11.3789C42.9727 10.6875 42.5742 10.2305 41.5664 9.65625L25.6992 0.339844C25.3008 0.117188 24.9023 0 24.5039 0C23.6133 0 22.8398 0.609375 22.8398 1.92188Z"></path></g></svg></button>
+<button class="mini-play" title="Pause"><svg fill="currentColor" height="21" viewbox="0 0 18.1523 24.668" width="16"><path d="M1.875 24.6445L5.25 24.6445C6.50391 24.6445 7.125 24.0234 7.125 22.7695L7.125 1.875C7.125 0.574219 6.50391 0 5.25 0L1.875 0C0.621094 0 0 0.621094 0 1.875L0 22.7695C0 24.0234 0.621094 24.6445 1.875 24.6445ZM12.5508 24.6445L15.9258 24.6445C17.1797 24.6445 17.8008 24.0234 17.8008 22.7695L17.8008 1.875C17.8008 0.574219 17.1797 0 15.9258 0L12.5508 0C11.2969 0 10.6758 0.621094 10.6758 1.875L10.6758 22.7695C10.6758 24.0234 11.2969 24.6445 12.5508 24.6445Z"></path></svg></button>
+<button title="Suivant"><svg fill="currentColor" height="15" viewbox="0 0 42.9727 22.7695" width="27"><path d="M2.78906 20.8359C2.78906 22.1484 3.5625 22.7461 4.45312 22.7461C4.85156 22.7461 5.25 22.6289 5.64844 22.4062L21.5273 13.0898C22.5234 12.5156 22.9219 12.0703 22.9219 11.3789C22.9219 10.6875 22.5234 10.2305 21.5273 9.65625L5.64844 0.339844C5.25 0.117188 4.85156 0 4.45312 0C3.5625 0 2.78906 0.609375 2.78906 1.92188ZM22.8398 20.8359C22.8398 22.1484 23.6133 22.7461 24.5039 22.7461C24.9023 22.7461 25.3008 22.6289 25.6992 22.4062L41.5664 13.0898C42.5742 12.5156 42.9727 12.0703 42.9727 11.3789C42.9727 10.6875 42.5742 10.2305 41.5664 9.65625L25.6992 0.339844C25.3008 0.117188 24.9023 0 24.5039 0C23.6133 0 22.8398 0.609375 22.8398 1.92188Z"></path></svg></button>
+</div>
+</div>
+</div>
+<label>V2 vertical — en lecture, sans AirPods</label>
+</div>
+<div class="col">
+<div class="mini-cover"></div>
+<div class="mini-player-v2"><div class="noise"></div>
+<svg class="mini-eq mini-eq-static" fill="currentColor" height="15" viewbox="0 0 19 15" width="19">
+<rect height="4" rx="1.35" width="2.7" x="0.5" y="5.5"></rect>
+<rect height="7" rx="1.35" width="2.7" x="5.4" y="4"></rect>
+<rect height="5" rx="1.35" width="2.7" x="10.3" y="5"></rect>
+<rect height="3" rx="1.35" width="2.7" x="15.2" y="6"></rect>
+</svg>
+<div class="mini-title">Sanctuary - Bonzaie Clairing</div>
+<div class="mini-sub">Lorien Testard</div>
+<div class="mini-progress">
+<span>0:33</span>
+<div class="mini-rail"><i></i></div>
+<span>−3:54</span>
+</div>
+<div class="mini-transport">
+<div class="mini-group">
+<button title="Précédent"><svg fill="currentColor" height="15" viewbox="0 0 42.9727 22.7695" width="27"><g transform="translate(42.9727,0) scale(-1,1)"><path d="M2.78906 20.8359C2.78906 22.1484 3.5625 22.7461 4.45312 22.7461C4.85156 22.7461 5.25 22.6289 5.64844 22.4062L21.5273 13.0898C22.5234 12.5156 22.9219 12.0703 22.9219 11.3789C22.9219 10.6875 22.5234 10.2305 21.5273 9.65625L5.64844 0.339844C5.25 0.117188 4.85156 0 4.45312 0C3.5625 0 2.78906 0.609375 2.78906 1.92188ZM22.8398 20.8359C22.8398 22.1484 23.6133 22.7461 24.5039 22.7461C24.9023 22.7461 25.3008 22.6289 25.6992 22.4062L41.5664 13.0898C42.5742 12.5156 42.9727 12.0703 42.9727 11.3789C42.9727 10.6875 42.5742 10.2305 41.5664 9.65625L25.6992 0.339844C25.3008 0.117188 24.9023 0 24.5039 0C23.6133 0 22.8398 0.609375 22.8398 1.92188Z"></path></g></svg></button>
+<button class="mini-play" title="Lecture"><svg fill="currentColor" height="20" style="margin-left:3px" viewbox="0 0 24.9141 25.043" width="20"><path d="M2.78906 23.0039C2.78906 24.3867 3.59766 25.0312 4.54688 25.0312C4.95703 25.0312 5.39062 24.9023 5.80078 24.668L23.4258 14.3086C24.5156 13.6758 24.9141 13.2305 24.9141 12.5156C24.9141 11.7891 24.5156 11.3438 23.4258 10.7109L5.80078 0.351562C5.39062 0.117188 4.95703 0 4.54688 0C3.59766 0 2.78906 0.632812 2.78906 2.01562Z"></path></svg></button>
+<button title="Suivant"><svg fill="currentColor" height="15" viewbox="0 0 42.9727 22.7695" width="27"><path d="M2.78906 20.8359C2.78906 22.1484 3.5625 22.7461 4.45312 22.7461C4.85156 22.7461 5.25 22.6289 5.64844 22.4062L21.5273 13.0898C22.5234 12.5156 22.9219 12.0703 22.9219 11.3789C22.9219 10.6875 22.5234 10.2305 21.5273 9.65625L5.64844 0.339844C5.25 0.117188 4.85156 0 4.45312 0C3.5625 0 2.78906 0.609375 2.78906 1.92188ZM22.8398 20.8359C22.8398 22.1484 23.6133 22.7461 24.5039 22.7461C24.9023 22.7461 25.3008 22.6289 25.6992 22.4062L41.5664 13.0898C42.5742 12.5156 42.9727 12.0703 42.9727 11.3789C42.9727 10.6875 42.5742 10.2305 41.5664 9.65625L25.6992 0.339844C25.3008 0.117188 24.9023 0 24.5039 0C23.6133 0 22.8398 0.609375 22.8398 1.92188Z"></path></svg></button>
+</div>
+</div>
+</div>
+<label>V2 vertical — en pause, sans AirPods</label>
+</div>
+</div></div></article></section><section class="museum-section" id="search"><div class="museum-section-head"><div><span class="museum-section-index">04</span><h2>Search surfaces</h2></div><p>Le même composant compact dans ses états replié et développé, présenté sur un fond d’application sombre.</p></div><article class="museum-stage" data-tone="neutral"><div class="museum-stage-head"><strong>Compact search sidebar</strong><span>02 states</span></div><div class="museum-stage-canvas"><div class="row">
+<div class="col">
+<div class="sbs-demo">
+<div class="sbs-search"><div class="noise"></div>
+<svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-width="2" style="position:relative;z-index:1;opacity:.6;flex-shrink:0" viewbox="0 0 24 24" width="14"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+<span class="sbs-input">kik</span>
+</div>
+<div class="sbs-drop"><div class="noise"></div>
+<div class="sbs-group">
+<div class="sbs-group-head"><h4>YouTube</h4><button class="sbs-chevron"><svg fill="none" height="12" stroke="currentColor" stroke-linecap="round" stroke-width="2.2" viewbox="0 0 24 24" width="12"><path d="M6 9l6 6 6-6"></path></svg></button></div>
+<div class="sbs-row"><div class="sbs-thumb"></div><span><strong>Exploring the Dark World of Kik Messenger</strong><small>Visual Venture</small></span><button class="sbs-add">+</button></div>
+<div class="sbs-row"><div class="sbs-thumb"></div><span><strong>Kik Messenger Is Disgusting</strong><small>penguinz0</small></span><button class="sbs-add">+</button></div>
+</div>
+<div class="sbs-group">
+<div class="sbs-group-head"><h4>Spotify</h4><button class="sbs-chevron"><svg fill="none" height="12" stroke="currentColor" stroke-linecap="round" stroke-width="2.2" viewbox="0 0 24 24" width="12"><path d="M6 9l6 6 6-6"></path></svg></button></div>
+<div class="sbs-row"><div class="sbs-thumb round"></div><span><strong>In My Feelings</strong><small>Drake</small></span><button class="sbs-add">+</button></div>
+<div class="sbs-row"><div class="sbs-thumb round"></div><span><strong>Kikiwaka (Bunk'd Theme Song)</strong><small>Xander</small></span><button class="sbs-add">+</button></div>
+</div>
+<div class="sbs-group">
+<div class="sbs-group-head"><h4>Fichiers locaux</h4><button class="sbs-chevron"><svg fill="none" height="12" stroke="currentColor" stroke-linecap="round" stroke-width="2.2" viewbox="0 0 24 24" width="12"><path d="M6 9l6 6 6-6"></path></svg></button></div>
+<div class="sbs-row"><div class="sbs-thumb round"></div><span><strong>Kiki's Delivery Service — Main Theme</strong><small>Geek Music - Topic</small></span><button class="sbs-add">+</button></div>
+</div>
+</div>
+</div>
+<label>état replié — 3 groupes, chevron ↓ sur chacun, 2 résultats max</label>
+</div>
+<div class="col">
+<div class="sbs-demo">
+<div class="sbs-search"><div class="noise"></div>
+<svg fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-width="2" style="position:relative;z-index:1;opacity:.6;flex-shrink:0" viewbox="0 0 24 24" width="14"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+<span class="sbs-input">kik</span>
+</div>
+<div class="sbs-drop"><div class="noise"></div>
+<div class="sbs-group">
+<div class="sbs-group-head"><h4>YouTube</h4><button class="sbs-chevron"><svg fill="none" height="12" stroke="currentColor" stroke-linecap="round" stroke-width="2.2" viewbox="0 0 24 24" width="12"><path d="M6 9l6 6 6-6"></path></svg></button></div>
+<div class="sbs-row"><div class="sbs-thumb"></div><span><strong>Exploring the Dark World of Kik Messenger</strong><small>Visual Venture</small></span><button class="sbs-add">+</button></div>
+<div class="sbs-row"><div class="sbs-thumb"></div><span><strong>Kik Messenger Is Disgusting</strong><small>penguinz0</small></span><button class="sbs-add">+</button></div>
+</div>
+<!-- Spotify DÉPLIÉ (même .sbs-group, juste .expanded + chevron retourné + 6 lignes + pagination) -->
+<div class="sbs-group expanded">
+<div class="sbs-group-head"><h4>Spotify</h4><button class="sbs-chevron up"><svg fill="none" height="12" stroke="currentColor" stroke-linecap="round" stroke-width="2.2" viewbox="0 0 24 24" width="12"><path d="M6 9l6 6 6-6"></path></svg></button></div>
+<div class="sbs-row"><div class="sbs-thumb round"></div><span><strong>In My Feelings</strong><small>Drake</small></span><button class="sbs-add">+</button></div>
+<div class="sbs-row"><div class="sbs-thumb round"></div><span><strong>Kikiwaka (Bunk'd Theme Song)</strong><small>Xander</small></span><button class="sbs-add">+</button></div>
+<div class="sbs-row"><div class="sbs-thumb round"></div><span><strong>ふたつの木馬 (feat. 初音ミク)</strong><small>Kikuo, Hatsune Miku</small></span><button class="sbs-add">+</button></div>
+<div class="sbs-row"><div class="sbs-thumb round"></div><span><strong>KOKO</strong><small>Omar Courtz</small></span><button class="sbs-add">+</button></div>
+<div class="sbs-row"><div class="sbs-thumb round"></div><span><strong>Kickstart My Heart</strong><small>Mötley Crüe</small></span><button class="sbs-add">+</button></div>
+<div class="sbs-row"><div class="sbs-thumb round"></div><span><strong>Ni un Ki Ki</strong><small>Jey One, Yailin la Mas Viral</small></span><button class="sbs-add">+</button></div>
+<div class="sbs-pagination">
+<button class="sbs-page-btn"><svg fill="none" height="11" stroke="currentColor" stroke-linecap="round" stroke-width="2.4" viewbox="0 0 24 24" width="11"><path d="M15 6l-6 6 6 6"></path></svg></button>
+<span>1/4</span>
+<button class="sbs-page-btn"><svg fill="none" height="11" stroke="currentColor" stroke-linecap="round" stroke-width="2.4" viewbox="0 0 24 24" width="11"><path d="M9 6l6 6-6 6"></path></svg></button>
+</div>
+</div>
+<div class="sbs-group">
+<div class="sbs-group-head"><h4>Fichiers locaux</h4><button class="sbs-chevron"><svg fill="none" height="12" stroke="currentColor" stroke-linecap="round" stroke-width="2.2" viewbox="0 0 24 24" width="12"><path d="M6 9l6 6 6-6"></path></svg></button></div>
+<div class="sbs-row"><div class="sbs-thumb round"></div><span><strong>Kiki's Delivery Service — Main Theme</strong><small>Geek Music - Topic</small></span><button class="sbs-add">+</button></div>
+</div>
+</div>
+</div>
+<label>état déplié — Spotify seul ouvert (chevron ↑), 6 résultats + pagination 1/4</label>
+</div>
+</div></div></article></section><section class="museum-section" id="motion"><div class="museum-section-head"><div><span class="museum-section-index">05</span><h2>Motion timing</h2></div><p>Comparaison directe des transitions pause/lecture, des timings rapides aux durées volontairement lentes.</p></div><article class="museum-stage" data-tone="rose"><div class="museum-stage-head"><strong>Fast interaction range</strong><span>0.10–0.35 s</span></div><div class="museum-stage-canvas"><div aria-label="Comparaison des durées de transition" class="row play-timing-row">
+<div class="col play-timing" data-duration="0.10s">
+<button aria-label="Tester la transition en 0,10 seconde" aria-pressed="false" class="glass timing-toggle" type="button">
+<svg aria-hidden="true" class="timing-icon timing-pause" viewbox="0 0 18.1523 24.668"><path d="M1.875 24.6445L5.25 24.6445C6.50391 24.6445 7.125 24.0234 7.125 22.7695L7.125 1.875C7.125 0.574219 6.50391 0 5.25 0L1.875 0C0.621094 0 0 0.621094 0 1.875L0 22.7695C0 24.0234 0.621094 24.6445 1.875 24.6445ZM12.5508 24.6445L15.9258 24.6445C17.1797 24.6445 17.8008 24.0234 17.8008 22.7695L17.8008 1.875C17.8008 0.574219 17.1797 0 15.9258 0L12.5508 0C11.2969 0 10.6758 0.621094 10.6758 1.875L10.6758 22.7695C10.6758 24.0234 11.2969 24.6445 12.5508 24.6445Z"></path></svg>
+<svg aria-hidden="true" class="timing-icon timing-play" viewbox="0 0 24.9141 25.043"><path d="M2.78906 23.0039C2.78906 24.3867 3.59766 25.0312 4.54688 25.0312C4.95703 25.0312 5.39062 24.9023 5.80078 24.668L23.4258 14.3086C24.5156 13.6758 24.9141 13.2305 24.9141 12.5156C24.9141 11.7891 24.5156 11.3438 23.4258 10.7109L5.80078 0.351562C5.39062 0.117188 4.95703 0 4.54688 0C3.59766 0 2.78906 0.632812 2.78906 2.01562Z"></path></svg>
+</button>
+<label>0,10 s</label>
+</div>
+<div class="col play-timing" data-duration="0.15s"><button aria-label="Tester la transition en 0,15 seconde" aria-pressed="false" class="glass timing-toggle" type="button"><svg aria-hidden="true" class="timing-icon timing-pause" viewbox="0 0 18.1523 24.668"><path d="M1.875 24.6445L5.25 24.6445C6.50391 24.6445 7.125 24.0234 7.125 22.7695L7.125 1.875C7.125 0.574219 6.50391 0 5.25 0L1.875 0C0.621094 0 0 0.621094 0 1.875L0 22.7695C0 24.0234 0.621094 24.6445 1.875 24.6445ZM12.5508 24.6445L15.9258 24.6445C17.1797 24.6445 17.8008 24.0234 17.1797 24.0234 17.8008 24.0234 17.8008 22.7695L17.8008 1.875C17.8008 0.574219 17.1797 0 15.9258 0L12.5508 0C11.2969 0 10.6758 0.621094 10.6758 1.875L10.6758 22.7695C10.6758 24.0234 11.2969 24.6445 12.5508 24.6445Z"></path></svg><svg aria-hidden="true" class="timing-icon timing-play" viewbox="0 0 24.9141 25.043"><path d="M2.78906 23.0039C2.78906 24.3867 3.59766 25.0312 4.54688 25.0312C4.95703 25.0312 5.39062 24.9023 5.80078 24.668L23.4258 14.3086C24.5156 13.6758 24.9141 13.2305 24.9141 12.5156C24.9141 11.7891 24.5156 11.3438 23.4258 10.7109L5.80078 0.351562C5.39062 0.117188 4.95703 0 4.54688 0C3.59766 0 2.78906 0.632812 2.78906 2.01562Z"></path></svg></button><label>0,15 s</label></div>
+<div class="col play-timing" data-duration="0.20s"><button aria-label="Tester la transition en 0,20 seconde" aria-pressed="false" class="glass timing-toggle" type="button"><svg aria-hidden="true" class="timing-icon timing-pause" viewbox="0 0 18.1523 24.668"><path d="M1.875 24.6445L5.25 24.6445C6.50391 24.6445 7.125 24.0234 7.125 22.7695L7.125 1.875C7.125 0.574219 6.50391 0 5.25 0L1.875 0C0.621094 0 0 0.621094 0 1.875L0 22.7695C0 24.0234 0.621094 24.6445 1.875 24.6445ZM12.5508 24.6445L15.9258 24.6445C17.1797 24.6445 17.8008 24.0234 17.8008 22.7695L17.8008 1.875C17.8008 0.574219 17.1797 0 15.9258 0L12.5508 0C11.2969 0 10.6758 0.621094 10.6758 1.875L10.6758 22.7695C10.6758 24.0234 11.2969 24.6445 12.5508 24.6445Z"></path></svg><svg aria-hidden="true" class="timing-icon timing-play" viewbox="0 0 24.9141 25.043"><path d="M2.78906 23.0039C2.78906 24.3867 3.59766 25.0312 4.54688 25.0312C4.95703 25.0312 5.39062 24.9023 5.80078 24.668L23.4258 14.3086C24.5156 13.6758 24.9141 13.2305 24.9141 12.5156C24.9141 11.7891 24.5156 11.3438 23.4258 10.7109L5.80078 0.351562C5.39062 0.117188 4.95703 0 4.54688 0C3.59766 0 2.78906 0.632812 2.78906 2.01562Z"></path></svg></button><label>0,20 s</label></div>
+<div class="col play-timing" data-duration="0.25s"><button aria-label="Tester la transition en 0,25 seconde" aria-pressed="false" class="glass timing-toggle" type="button"><svg aria-hidden="true" class="timing-icon timing-pause" viewbox="0 0 18.1523 24.668"><path d="M1.875 24.6445L5.25 24.6445C6.50391 24.6445 7.125 24.0234 7.125 22.7695L7.125 1.875C7.125 0.574219 6.50391 0 5.25 0L1.875 0C0.621094 0 0 0.621094 0 1.875L0 22.7695C0 24.0234 0.621094 24.6445 1.875 24.6445ZM12.5508 24.6445L15.9258 24.6445C17.1797 24.6445 17.8008 24.0234 17.8008 22.7695L17.8008 1.875C17.8008 0.574219 17.1797 0 15.9258 0L12.5508 0C11.2969 0 10.6758 0.621094 10.6758 1.875L10.6758 22.7695C10.6758 24.0234 11.2969 24.6445 12.5508 24.6445Z"></path></svg><svg aria-hidden="true" class="timing-icon timing-play" viewbox="0 0 24.9141 25.043"><path d="M2.78906 23.0039C2.78906 24.3867 3.59766 25.0312 4.54688 25.0312C4.95703 25.0312 5.39062 24.9023 5.80078 24.668L23.4258 14.3086C24.5156 13.6758 24.9141 13.2305 24.9141 12.5156C24.9141 11.7891 24.5156 11.3438 23.4258 10.7109L5.80078 0.351562C5.39062 0.117188 4.95703 0 4.54688 0C3.59766 0 2.78906 0.632812 2.78906 2.01562Z"></path></svg></button><label>0,25 s</label></div>
+<div class="col play-timing" data-duration="0.30s"><button aria-label="Tester la transition en 0,30 seconde" aria-pressed="false" class="glass timing-toggle" type="button"><svg aria-hidden="true" class="timing-icon timing-pause" viewbox="0 0 18.1523 24.668"><path d="M1.875 24.6445L5.25 24.6445C6.50391 24.6445 7.125 24.0234 7.125 22.7695L7.125 1.875C7.125 0.574219 6.50391 0 5.25 0L1.875 0C0.621094 0 0 0.621094 0 1.875L0 22.7695C0 24.0234 0.621094 24.6445 1.875 24.6445ZM12.5508 24.6445L15.9258 24.6445C17.1797 24.6445 17.8008 24.0234 17.8008 22.7695L17.8008 1.875C17.8008 0.574219 17.1797 0 15.9258 0L12.5508 0C11.2969 0 10.6758 0.621094 10.6758 1.875L10.6758 22.7695C10.6758 24.0234 10.6445 12.5508 24.6445Z"></path></svg><svg aria-hidden="true" class="timing-icon timing-play" viewbox="0 0 24.9141 25.043"><path d="M2.78906 23.0039C2.78906 24.3867 3.59766 25.0312 4.54688 25.0312C4.95703 25.0312 5.39062 24.9023 5.80078 24.668L23.4258 14.3086C24.5156 13.6758 24.9141 13.2305 24.9141 12.5156C24.9141 11.7891 24.5156 11.3438 23.4258 10.7109L5.80078 0.351562C5.39062 0.117188 4.95703 0 4.54688 0C3.59766 0 2.78906 0.632812 2.78906 2.01562Z"></path></svg></button><label>0,30 s</label></div>
+<div class="col play-timing" data-duration="0.35s"><button aria-label="Tester la transition en 0,35 seconde" aria-pressed="false" class="glass timing-toggle" type="button"><svg aria-hidden="true" class="timing-icon timing-pause" viewbox="0 0 18.1523 24.668"><path d="M1.875 24.6445L5.25 24.6445C6.50391 24.6445 7.125 24.0234 7.125 22.7695L7.125 1.875C7.125 0.574219 6.50391 0 5.25 0L1.875 0C0.621094 0 0 0.621094 0 1.875L0 22.7695C0 24.0234 0.621094 24.6445 1.875 24.6445ZM12.5508 24.6445L15.9258 24.6445C17.1797 24.6445 17.8008 24.0234 17.8008 22.7695L17.8008 1.875C17.8008 0.574219 17.1797 0 15.9258 0L12.5508 0C11.2969 0 10.6758 0.621094 10.6758 1.875L10.6758 22.7695C10.6758 24.0234 11.2969 24.6445 12.5508 24.6445Z"></path></svg><svg aria-hidden="true" class="timing-icon timing-play" viewbox="0 0 24.9141 25.043"><path d="M2.78906 23.0039C2.78906 24.3867 3.59766 25.0312 4.54688 25.0312C4.95703 25.0312 5.39062 24.9023 5.80078 24.668L23.4258 14.3086C24.5156 13.6758 24.9141 13.2305 24.9141 12.5156C24.9141 11.7891 24.5156 11.3438 23.4258 10.7109L5.80078 0.351562C5.39062 0.117188 4.95703 0 4.54688 0C3.59766 0 2.78906 0.632812 2.78906 2.01562Z"></path></svg></button><label>0,35 s</label></div>
+</div></div></article><article class="museum-stage" data-tone="neutral"><div class="museum-stage-head"><strong>Slow comparison range</strong><span>0.50–2.00 s</span></div><div class="museum-stage-canvas"><div aria-label="Comparaison des durées longues" class="row play-timing-row">
+<div class="col play-timing" data-duration="0.50s"><button aria-label="Tester la transition en 0,5 seconde" aria-pressed="false" class="glass timing-toggle" type="button"><svg aria-hidden="true" class="timing-icon timing-pause" viewbox="0 0 18.1523 24.668"><path d="M1.875 24.6445L5.25 24.6445C6.50391 24.6445 7.125 24.0234 7.125 22.7695L7.125 1.875C7.125 0.574219 6.50391 0 5.25 0L1.875 0C0.621094 0 0 0.621094 0 1.875L0 22.7695C0 24.0234 0.621094 24.6445 1.875 24.6445ZM12.5508 24.6445L15.9258 24.6445C17.1797 24.6445 17.8008 24.0234 17.8008 22.7695L17.8008 1.875C17.8008 0.574219 17.1797 0 15.9258 0L12.5508 0C11.2969 0 10.6758 0.621094 10.6758 1.875L10.6758 22.7695C10.6758 24.0234 11.2969 24.6445 12.5508 24.6445Z"></path></svg><svg aria-hidden="true" class="timing-icon timing-play" viewbox="0 0 24.9141 25.043"><path d="M2.78906 23.0039C2.78906 24.3867 3.59766 25.0312 4.54688 25.0312C4.95703 25.0312 5.39062 24.9023 5.80078 24.668L23.4258 14.3086C24.5156 13.6758 24.9141 13.2305 24.9141 12.5156C24.9141 11.7891 24.5156 11.3438 23.4258 10.7109L5.80078 0.351562C5.39062 0.117188 4.95703 0 4.54688 0C3.59766 0 2.78906 0.632812 2.78906 2.01562Z"></path></svg></button><label>0,5 s</label></div>
+<div class="col play-timing" data-duration="1.00s"><button aria-label="Tester la transition en 1 seconde" aria-pressed="false" class="glass timing-toggle" type="button"><svg aria-hidden="true" class="timing-icon timing-pause" viewbox="0 0 18.1523 24.668"><path d="M1.875 24.6445L5.25 24.6445C6.50391 24.6445 7.125 24.0234 7.125 22.7695L7.125 1.875C7.125 0.574219 6.50391 0 5.25 0L1.875 0C0.621094 0 0 0.621094 0 1.875L0 22.7695C0 24.0234 0.621094 24.6445 1.875 24.6445ZM12.5508 24.6445L15.9258 24.6445C17.1797 24.6445 17.8008 24.0234 17.8008 22.7695L17.8008 1.875C17.8008 0.574219 17.1797 0 15.9258 0L12.5508 0C11.2969 0 10.6758 0.621094 10.6758 1.875L10.6758 22.7695C10.6758 24.0234 11.2969 24.6445 12.5508 24.6445Z"></path></svg><svg aria-hidden="true" class="timing-icon timing-play" viewbox="0 0 24.9141 25.043"><path d="M2.78906 23.0039C2.78906 24.3867 3.59766 25.0312 4.54688 25.0312C4.95703 25.0312 5.39062 24.9023 5.80078 24.668L23.4258 14.3086C24.5156 13.6758 24.9141 13.2305 24.9141 12.5156C24.9141 11.7891 24.5156 11.3438 23.4258 10.7109L5.80078 0.351562C5.39062 0.117188 4.95703 0 4.54688 0C3.59766 0 2.78906 0.632812 2.78906 2.01562Z"></path></svg></button><label>1 s</label></div>
+<div class="col play-timing" data-duration="2.00s"><button aria-label="Tester la transition en 2 secondes" aria-pressed="false" class="glass timing-toggle" type="button"><svg aria-hidden="true" class="timing-icon timing-pause" viewbox="0 0 18.1523 24.668"><path d="M1.875 24.6445L5.25 24.6445C6.50391 24.6445 7.125 24.0234 7.125 22.7695L7.125 1.875C7.125 0.574219 6.50391 0 5.25 0L1.875 0C0.621094 0 0 0.621094 0 1.875L0 22.7695C0 24.0234 0.621094 24.6445 1.875 24.6445ZM12.5508 24.6445L15.9258 24.6445C17.1797 24.6445 17.8008 24.0234 17.8008 22.7695L17.8008 1.875C17.8008 0.574219 17.1797 0 15.9258 0L12.5508 0C11.2969 0 10.6758 0.621094 10.6758 1.875L10.6758 22.7695C10.6758 24.0234 11.2969 24.6445 12.5508 24.6445Z"></path></svg><svg aria-hidden="true" class="timing-icon timing-play" viewbox="0 0 24.9141 25.043"><path d="M2.78906 23.0039C2.78906 24.3867 3.59766 25.0312 4.54688 25.0312C4.95703 25.0312 5.39062 24.9023 5.80078 24.668L23.4258 14.3086C24.5156 13.6758 24.9141 13.2305 24.9141 12.5156C24.9141 11.7891 24.5156 11.3438 23.4258 10.7109L5.80078 0.351562C5.39062 0.117188 4.95703 0 4.54688 0C3.59766 0 2.78906 0.632812 2.78906 2.01562Z"></path></svg></button><label>2 s</label></div>
+</div></div></article></section><footer class="museum-footer"><span>Liquid Glass · Component Reference Museum</span><span>Standalone HTML · Original component markup preserved</span></footer></main></div><script>
+  const pausePath = 'M1.875 24.6445L5.25 24.6445C6.50391 24.6445 7.125 24.0234 7.125 22.7695L7.125 1.875C7.125 0.574219 6.50391 0 5.25 0L1.875 0C0.621094 0 0 0.621094 0 1.875L0 22.7695C0 24.0234 0.621094 24.6445 1.875 24.6445ZM12.5508 24.6445L15.9258 24.6445C17.1797 24.6445 17.8008 24.0234 17.8008 22.7695L17.8008 1.875C17.8008 0.574219 17.1797 0 15.9258 0L12.5508 0C11.2969 0 10.6758 0.621094 10.6758 1.875L10.6758 22.7695C10.6758 24.0234 11.2969 24.6445 12.5508 24.6445Z';
+  document.querySelectorAll('.timing-pause path').forEach((path) => path.setAttribute('d', pausePath));
+  document.querySelectorAll('.play-timing').forEach((demo) => {
+    const button = demo.querySelector('.timing-toggle');
+    const duration = demo.dataset.duration;
+    button.style.setProperty('--timing-duration', duration);
+    button.addEventListener('click', () => {
+      const playing = button.classList.toggle('is-playing');
+      button.setAttribute('aria-pressed', String(playing));
+      button.setAttribute('aria-label', `${playing ? 'Pause' : 'Lecture'} — transition ${duration}`);
+    });
+  });
+</script><script id="museum-navigation">
+(() => {
+  const sections = [...document.querySelectorAll('.museum-section')];
+  const links = [...document.querySelectorAll('.museum-topnav a, .museum-index-item')];
+  const setActive = id => links.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${id}`));
+  const observer = new IntersectionObserver(entries => {
+    const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio-a.intersectionRatio)[0];
+    if(visible) setActive(visible.target.id);
+  }, {rootMargin:'-20% 0px -62% 0px',threshold:[0,.15,.35,.6]});
+  sections.forEach(section => observer.observe(section));
+})();
+</script><script id="zenray-glass-runtime">
+(() => {
+  const selector = [
+    ".glass",
+    ".pill",
+    ".progress-pill",
+    ".capsule-label",
+    ".card",
+    ".group-panel",
+    ".toggle-slider",
+    ".vd-volume",
+    ".vd-morepill",
+    ".mini-player",
+    ".mini-h",
+    ".mini-h2",
+    ".mini-player-v2",
+    ".sbs-search",
+    ".sbs-drop"
+  ].join(",");
+
+  const surfaces = [...new Set(document.querySelectorAll(selector))];
+  const states = [];
+  let raf = 0;
+
+  const makeLayer = className => {
+    const viewport = document.createElement("span");
+    viewport.className = className;
+    viewport.setAttribute("aria-hidden", "true");
+
+    const sample = document.createElement("span");
+    sample.className = "zr-refraction-sample";
+    viewport.appendChild(sample);
+
+    return {viewport, sample};
+  };
+
+  const pickSource = surface =>
+    surface.closest(".video-demo") ||
+    surface.closest(".sbs-demo") ||
+    surface.closest(".museum-stage-canvas") ||
+    surface.closest(".light-canvas") ||
+    document.body;
+
+  const copyBackground = (source, sample) => {
+    const css = getComputedStyle(source);
+    sample.style.backgroundColor = css.backgroundColor;
+    sample.style.backgroundImage = css.backgroundImage;
+    sample.style.backgroundSize = css.backgroundSize;
+    sample.style.backgroundPosition = css.backgroundPosition;
+    sample.style.backgroundRepeat = css.backgroundRepeat;
+    sample.style.backgroundOrigin = css.backgroundOrigin;
+    sample.style.backgroundClip = css.backgroundClip;
+    sample.style.backgroundAttachment = "scroll";
+  };
+
+  const placeSample = (
+    state,sample,scaleX,scaleY,bendX,bendY,compensation=0
+  ) => {
+    const surfaceRect = state.surface.getBoundingClientRect();
+    const sourceRect = state.source.getBoundingClientRect();
+
+    const focusX = state.inside ? state.localX : surfaceRect.width * .5;
+    const focusY = state.inside ? state.localY : surfaceRect.height * .5;
+
+    const localSourceX = surfaceRect.left - sourceRect.left;
+    const localSourceY = surfaceRect.top - sourceRect.top;
+    const globalFocusX = localSourceX + focusX;
+    const globalFocusY = localSourceY + focusY;
+
+    const tx = focusX - scaleX * globalFocusX + bendX + compensation;
+    const ty = focusY - scaleY * globalFocusY + bendY + compensation;
+
+    sample.style.left = `${-compensation}px`;
+    sample.style.top = `${-compensation}px`;
+    sample.style.width = `${sourceRect.width}px`;
+    sample.style.height = `${sourceRect.height}px`;
+    sample.style.transform =
+      `translate3d(${tx.toFixed(3)}px,${ty.toFixed(3)}px,0) ` +
+      `scale(${scaleX.toFixed(5)},${scaleY.toFixed(5)})`;
+  };
+
+  const renderState = state => {
+    state.currentX += (state.targetX - state.currentX) * .12;
+    state.currentY += (state.targetY - state.currentY) * .12;
+
+    const rect = state.surface.getBoundingClientRect();
+    const ring = Math.min(
+      13,
+      Math.max(5,Math.min(rect.width,rect.height) * .14)
+    );
+    state.surface.style.setProperty("--zr-ring",`${ring.toFixed(2)}px`);
+
+    copyBackground(state.source,state.core.sample);
+    copyBackground(state.source,state.rim.sample);
+
+    placeSample(
+      state,
+      state.core.sample,
+      1.012 + Math.abs(state.currentX) * .0015,
+      1.009 + Math.abs(state.currentY) * .0012,
+      -state.currentX * 2.6,
+      -state.currentY * 1.9
+    );
+
+    placeSample(
+      state,
+      state.rim.sample,
+      1.050 + Math.abs(state.currentX) * .003,
+      1.038 + Math.abs(state.currentY) * .0025,
+      -state.currentX * 7.8,
+      -state.currentY * 5.6,
+      ring
+    );
+
+    return (
+      Math.abs(state.currentX - state.targetX) > .001 ||
+      Math.abs(state.currentY - state.targetY) > .001
+    );
+  };
+
+  const frame = () => {
+    let moving = false;
+    for(const state of states){
+      moving = renderState(state) || moving;
+    }
+
+    if(moving){
+      raf = requestAnimationFrame(frame);
+    }else{
+      raf = 0;
+    }
+  };
+
+  const schedule = () => {
+    if(!raf) raf = requestAnimationFrame(frame);
+  };
+
+  for(const [index,surface] of surfaces.entries()){
+    surface.classList.add("zenray-glass-surface");
+    surface.dataset.zenrayGlassIndex = String(index + 1);
+
+    const source = pickSource(surface);
+    const brightContext =
+      document.body.classList.contains("zenray-theme-light") ||
+      Boolean(surface.closest('.museum-stage[data-tone="rose"]')) ||
+      Boolean(surface.closest(".video-demo"));
+
+    surface.classList.toggle("zenray-on-bright",brightContext);
+
+    const core = makeLayer("zr-refraction zr-refraction-core");
+    const rim = makeLayer("zr-refraction zr-refraction-rim");
+    const fill = document.createElement("span");
+    const opticalRim = document.createElement("span");
+
+    fill.className = "zr-glass-fill";
+    fill.setAttribute("aria-hidden","true");
+    opticalRim.className = "zr-optical-rim";
+    opticalRim.setAttribute("aria-hidden","true");
+
+    surface.prepend(opticalRim);
+    surface.prepend(fill);
+    surface.prepend(rim.viewport);
+    surface.prepend(core.viewport);
+
+    const rect = surface.getBoundingClientRect();
+    const state = {
+      surface,
+      source,
+      core,
+      rim,
+      targetX:0,
+      targetY:0,
+      currentX:0,
+      currentY:0,
+      localX:rect.width * .5,
+      localY:rect.height * .5,
+      inside:false
+    };
+
+    const readPointer = event => {
+      const currentRect = surface.getBoundingClientRect();
+      state.localX = Math.max(
+        0,
+        Math.min(currentRect.width,event.clientX - currentRect.left)
+      );
+      state.localY = Math.max(
+        0,
+        Math.min(currentRect.height,event.clientY - currentRect.top)
+      );
+      state.targetX =
+        (state.localX / Math.max(1,currentRect.width) - .5) * 2;
+      state.targetY =
+        (state.localY / Math.max(1,currentRect.height) - .5) * 2;
+      state.inside = true;
+      schedule();
+    };
+
+    surface.addEventListener("pointerenter",readPointer,{passive:true});
+    surface.addEventListener("pointermove",readPointer,{passive:true});
+    surface.addEventListener("pointerleave",() => {
+      state.inside = false;
+      state.targetX = 0;
+      state.targetY = 0;
+      schedule();
+    },{passive:true});
+
+    states.push(state);
+  }
+
+  const refreshAll = () => {
+    for(const state of states){
+      state.source = pickSource(state.surface);
+    }
+    schedule();
+  };
+
+  window.addEventListener("resize",refreshAll,{passive:true});
+  document.addEventListener(
+    "scroll",
+    refreshAll,
+    {passive:true,capture:true}
+  );
+
+  if("ResizeObserver" in window){
+    const observer = new ResizeObserver(refreshAll);
+    surfaces.forEach(surface => observer.observe(surface));
+  }
+
+  refreshAll();
+
+  window.__ZENRAY_GLASS__ = {
+    count:surfaces.length,
+    refresh:refreshAll
+  };
+})();
+</script></body>
+</html>
