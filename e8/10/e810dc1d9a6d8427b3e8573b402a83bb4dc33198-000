@@ -1,0 +1,259 @@
+# IMG TO COMPONENTS WORKFLOW — ZenRayMedia
+
+## Objectif
+
+Transformer un corpus de screenshots en un **thème HTML réutilisable**.
+
+Le pipeline ne doit pas copier bêtement chaque pixel. Il doit :
+
+1. détecter les patterns ;
+2. les normaliser ;
+3. les transformer en composants HTML/CSS/JS ;
+4. fournir une version utilisable dans ZenRayMedia.
+
+---
+
+## 1. Entrées
+
+Entrées minimales :
+
+- `capture-manifest.json`
+- captures `raw/`
+- crops `crops/`
+- notes `visual-observations.md`
+- description du calibrage (ex. Le Monde)
+- contraintes ZenRayMedia
+
+---
+
+## 2. Sorties
+
+Sorties cibles :
+
+- `theme-reference.html` ou `ThemeName_AllComponents.html`
+- `theme-tokens.css` ou tokens inline
+- `component-map.json`
+- `component-anatomy.md`
+- `theme-manifest.json`
+- `qa-report.md`
+
+---
+
+## 3. Extraction des patterns
+
+L’agent doit analyser les screenshots et répondre à ces questions :
+
+### A. Architecture générale
+- Quelle est la largeur max du contenu ?
+- Le header est-il sombre ou clair ?
+- Le logo est-il centré ou aligné à gauche ?
+- Quelle est la structure de navigation ?
+- Y a-t-il un ticker ?
+- Y a-t-il une sidebar ?
+- Quels types de pages existent ?
+
+### B. Typographie
+- Quelle famille pour les gros titres ?
+- Quelle famille pour les textes ?
+- Quels contrastes de poids ?
+- Quelle hiérarchie H1 / H2 / H3 / meta / caption ?
+
+### C. Grille et espacements
+- nombre de colonnes ;
+- gutters ;
+- marges ;
+- densité visuelle ;
+- espaces entre composants.
+
+### D. Cards et modules
+Lister toutes les familles de cartes :
+
+- hero-live
+- article-card-h
+- article-card-v
+- breaking-card
+- sidebar-module
+- mini-row
+- most-read
+- question-box
+- live-update-card
+- cover-card
+- tag-chip
+- drawer-link
+- ad-placeholder
+
+### E. États spécifiques
+- menu ouvert
+- sticky header
+- carousel state
+- mobile stack
+- version live
+- article end recommendations
+
+---
+
+## 4. Nommage des composants
+
+Utiliser une convention stable :
+
+`zrm-[source]-[family]-[variant]`
+
+Exemples :
+
+- `zrm-lm-header-masthead`
+- `zrm-lm-header-primary-nav`
+- `zrm-lm-ticker-breaking`
+- `zrm-lm-hero-live`
+- `zrm-lm-card-article-horizontal`
+- `zrm-lm-card-article-vertical`
+- `zrm-lm-module-most-read`
+- `zrm-lm-module-context`
+- `zrm-lm-live-update-card`
+- `zrm-lm-kiosk-cover`
+- `zrm-lm-drawer-menu`
+
+---
+
+## 5. Contrat de reconstruction HTML
+
+Le HTML produit doit :
+
+- être autonome ;
+- ne dépendre d’aucun fetch ;
+- utiliser des placeholders visuels locaux ou CSS shapes ;
+- respecter l’architecture visuelle observée ;
+- regrouper les composants dans des sections claires ;
+- contenir aussi des pages-démos ;
+- rester intégrable dans ZenRayMedia.
+
+### Contraintes fortes
+
+- pas de CDN obligatoire ;
+- pas de remote CSS ;
+- pas de JS complexe inutile ;
+- tout tenir dans 1 à quelques fichiers.
+
+---
+
+## 6. Structure recommandée du fichier HTML principal
+
+```text
+ThemeName_AllComponents.html
+  - overview
+  - homepage demo
+  - article demo
+  - live demo
+  - section demo
+  - kiosk demo
+  - menu overlay demo
+```
+
+Chaque page démo doit montrer les composants en contexte.
+
+---
+
+## 7. Design tokens à déduire
+
+L’agent doit déduire ou approcher :
+
+- `--bg`
+- `--paper`
+- `--ink`
+- `--ink-soft`
+- `--line`
+- `--brand-dark`
+- `--brand-accent`
+- `--radius-*`
+- `--content-width`
+- `--shadow-card`
+- `--font-serif`
+- `--font-sans`
+
+---
+
+## 8. Composants minimum pour un thème média complet
+
+### Global
+- header masthead
+- service links
+- subscribe button
+- primary nav
+- breadcrumb / subnav
+- footer
+
+### Home
+- breaking ticker
+- hero live
+- hero media
+- 3-column link grid
+- horizontal article cards
+- right rail
+
+### Article
+- article hero
+- dek
+- meta line
+- read-later CTA
+- article body
+- related grid
+- edition du jour block
+
+### Live
+- live hero
+- live stream card
+- question input box
+- facts essentials bar
+- context box
+- deeper reading list
+
+### Rubrique
+- section title
+- chips row
+- section listing
+
+### Kiosk
+- big cover
+- small cover
+- cover strip
+- CTA read issue
+
+### Menu
+- drawer list
+- dimmed content preview
+
+---
+
+## 9. QA visuelle
+
+L’agent doit vérifier :
+
+- que chaque composant visible dans les screenshots a une contrepartie HTML ;
+- que la page ressemble au média source même sans assets originaux ;
+- que les hiérarchies typographiques sont justes ;
+- que les proportions sont crédibles ;
+- que le thème peut servir de base à une future customisation ZenRayMedia.
+
+---
+
+## 10. Quand refaire une phase screenshot ?
+
+Refaire une phase screenshot si :
+
+- il manque une page majeure ;
+- une rubrique importante n’a pas été couverte ;
+- les composants restent trop abstraits ;
+- la structure live ou article n’est pas assez documentée ;
+- le site a plusieurs sous-thèmes difficiles à inférer.
+
+---
+
+## 11. Sortie idéale pour ZenRayMedia
+
+Le pipeline final pour un thème donné doit produire :
+
+1. un HTML « all components » ;
+2. un JSON mapping des composants ;
+3. un manifest de thème ;
+4. un prompt de régénération ;
+5. un corpus d’images sources ;
+6. une checklist QA.
